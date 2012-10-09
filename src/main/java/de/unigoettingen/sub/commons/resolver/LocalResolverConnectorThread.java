@@ -36,16 +36,16 @@ import org.xml.sax.SAXException;
 public class LocalResolverConnectorThread extends Thread {
 
     static Logger logger = Logger.getLogger(Resolver.class.getName());
-    boolean running = false;
+    //boolean running = false;
     Preferences myPrefs;
     String url;
     int timeout;
-    boolean finished = false;
+    //boolean finished = false;
     LinkedList allURLs;
     String localresolverurl = null; // URL or the local resolver to connect for resolution
 
     public LocalResolverConnectorThread(Preferences inPrefs, String inUrl, int inTimeout) {
-        running = true;
+        //running = true;
         myPrefs = inPrefs;
         url = inUrl;
         timeout = inTimeout;
@@ -110,12 +110,13 @@ public class LocalResolverConnectorThread extends Thread {
             // Release the connection.
             method.releaseConnection();
         }
-        finished = true;
+        //finished = true;
     }
-
+    /*
     public boolean isFinished() {
         return finished;
     }
+    */
 
     /**
      * Retrieves the result of the connection request; if no URLs are available
