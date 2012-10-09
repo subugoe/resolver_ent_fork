@@ -4,7 +4,6 @@
  */
 package de.unigoettingen.sub.commons.resolver;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -38,7 +37,7 @@ public class Resolver extends HttpServlet {
     /**
      *
      */
-    static String errorMailAdress = "kothe@sub.uni-goettingen.de";
+    //static String errorMailAdress = "kothe@sub.uni-goettingen.de";
     private static final long serialVersionUID = 0022001;
     Preferences myPrefs = null;
     String version = "version 0.3";
@@ -330,6 +329,7 @@ public class Resolver extends HttpServlet {
     private void showHTML_Error(HttpServletResponse response)
             throws IOException {
         PrintWriter webout;
+        String errorMailAdress = myPrefs.getContact();
         try {
             webout = response.getWriter(); // get stream;
         } catch (IOException ioe) {
