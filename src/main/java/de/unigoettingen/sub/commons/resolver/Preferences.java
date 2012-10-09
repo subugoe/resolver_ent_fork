@@ -5,13 +5,16 @@
 package de.unigoettingen.sub.commons.resolver;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * This class reads the preference file and parses its XML-structure. The
@@ -120,20 +123,20 @@ public class Preferences {
                     continue; // next iteration in loop
                 }
             } // end of for loop
-        } catch (javax.xml.parsers.ParserConfigurationException pce) {
+        } catch (ParserConfigurationException pce) {
             logger.error("ERROR: couldn't parse XML file ", pce);
             /*
             System.err.println("ERROR: couldn't parse XML file " + pce);
             */
             return false;
-        } catch (java.io.IOException ioe) {
+        } catch (IOException ioe) {
             logger.error("ERROR: Can't open xml-file " + filename, ioe);
             /*
             System.err.println("ERROR: Can't open xml-file " + filename);
             System.err.println(ioe);
             */
             return false;
-        } catch (org.xml.sax.SAXException se) {
+        } catch (SAXException se) {
             logger.error("ERROR: SAX exception ", se);
             /*
             System.err.println("ERROR: SAX exception " + se);
