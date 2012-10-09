@@ -7,11 +7,11 @@
 	<servlet>
 		<servlet-name>resolver</servlet-name>
 		<description>SUB Global Resolver</description>
-		<servlet-class>sub.resolver.Resolver</servlet-class>
+		<servlet-class>de.unigoettingen.sub.commons.resolver.Resolver</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name> resolver</servlet-name>
+		<servlet-name>resolver</servlet-name>
         <!-- <url-pattern>/digbib.cgi</url-pattern> -->
 	             <url-pattern>/</url-pattern>
 	</servlet-mapping>
