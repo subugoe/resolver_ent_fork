@@ -36,9 +36,10 @@ public class Resolver extends HttpServlet {
     /**
      *
      */
+    static String errorMailAdress = "kothe@sub.uni-goettingen.de";
     private static final long serialVersionUID = 0022001;
     Preferences myPrefs = null;
-    String version = "version 0.23 build 001";
+    String version = "version 0.3";
     String DIRSEP = null;
     String imagepath = null;
 
@@ -306,7 +307,7 @@ public class Resolver extends HttpServlet {
         webout.println("<title>error - internal error</title>");
         webout.println("</head><body>");
         webout.println("An internal error occured. Please report the URL and the error-message to"
-                + " enders@mail.sub.uni-goettingen.de");
+                + " " + errorMailAdress);
         webout.println("</body></html>"); // end of html-document
 
     }
