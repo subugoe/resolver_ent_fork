@@ -48,9 +48,10 @@ import org.xml.sax.SAXException;
 public class Preferences {
 
     static Logger logger = Logger.getLogger(Resolver.class.getName());
-    int debug = 0;
-    String logfile = null;
+    //int debug = 0;
+    //String logfile = null;
     String logoImage = "SUBLogo.gif";
+    String contact = null;
     LinkedList resolvers = null;
     int max_threadruntime = 30000;
     String DIRSEP;
@@ -107,17 +108,23 @@ public class Preferences {
                     if (singlenode.getNodeName().equals("localresolver")) {		// read list of all types, which are serials 
                         resolvers = readAllLocalResolvers(singlenode);
                     }
-
+                    /*
                     if (singlenode.getNodeName().equals("debug")) {
                         String debug_str = getValueOfElement(singlenode);
                         debug = Integer.parseInt(debug_str);
                     }
+                    */
                     if (singlenode.getNodeName().equals("maxThreadRuntime")) {
                         String debug_str = getValueOfElement(singlenode);
                         max_threadruntime = Integer.parseInt(debug_str);
                     }
+                    /*
                     if (singlenode.getNodeName().equals("logfile")) {
                         logfile = getValueOfElement(singlenode);
+                    }
+                    */
+                    if (singlenode.getNodeName().equals("contact")) {
+                        contact = getValueOfElement(singlenode);
                     }
                 } else {
                     continue; // next iteration in loop
