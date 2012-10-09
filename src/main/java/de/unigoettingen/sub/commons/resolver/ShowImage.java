@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author enders
  */
 public class ShowImage {
-
+    static String contentType = "image/gif";
     Preferences myPrefs = null;
     String DIRSEP;
 
@@ -28,7 +28,7 @@ public class ShowImage {
      * @param response
      */
     public ShowImage(String filename, HttpServletResponse response) {
-
+        
 
         if (filename == null) {
             return;
@@ -37,7 +37,7 @@ public class ShowImage {
         //
 
         try {
-            response.setContentType("image/gif");
+            response.setContentType(contentType);
             OutputStream out = response.getOutputStream();
 
             // read file and output it
@@ -48,6 +48,7 @@ public class ShowImage {
             }
             // finsihed reading; we are reading as long as there is something left to read
         } catch (IOException ioe) {
+            //TODO: Add a logger
             System.out.println("IOException while reading and writing image data:");
             System.out.println(ioe);
         }
