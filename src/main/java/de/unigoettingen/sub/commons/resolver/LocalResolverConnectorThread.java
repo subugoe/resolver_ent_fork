@@ -4,22 +4,22 @@
  */
 package de.unigoettingen.sub.commons.resolver;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
-
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * This class is a thread which connects to a single LPIR (local resolver) and
@@ -35,6 +35,7 @@ import org.w3c.dom.NodeList;
  */
 public class LocalResolverConnectorThread extends Thread {
 
+    static Logger logger = Logger.getLogger(Resolver.class.getName());
     boolean running = false;
     Preferences myPrefs;
     String url;
@@ -77,9 +78,11 @@ public class LocalResolverConnectorThread extends Thread {
 
             // error checking
             if (statusCode != HttpStatus.SC_OK) {
-
-                writeLog("SUBResolver: Method failed: " + method.getStatusLine());
-                writeLog("for URL:" + url);
+                logger.warn("SUBResolver: Method failed: " + method.getStatusLine() +  " for URL:" + url);
+                /*
+                writeLog("SUBResolver: Method failed: " + method.getStatusLine() +  " for URL:" + url);
+            
+                */ 
             }
 
             //method.getResponseBodyAsString();
@@ -94,11 +97,13 @@ public class LocalResolverConnectorThread extends Thread {
                 ex.printStackTrace();
             }
         } catch (IOException e) {
-            writeLog("SUBResolver: Fatal transport error: " + e.getMessage());
-            writeLog("             url:" + url);
+            logger.error("SUBResolver: Fatal transport error: " + e.getMessage() + "\n             url:" + url, e);
+            /*
+            writeLog("SUBResolver: Fatal transport error: " + e.getMessage() + "\n             url:" + url);
             if (myPrefs.debug > 1) {
                 e.printStackTrace();
             }
+            */ 
         } finally {
             // Release the connection.
             method.releaseConnection();
@@ -141,8 +146,11 @@ public class LocalResolverConnectorThread extends Thread {
             Node topmostelement = xmldoc.getDocumentElement();
 
             if (!topmostelement.getNodeName().equals("response")) {
-                writeLog("SUBResolver: ERROR: xml answer doesn't match DTD");
-                writeLog("for URL:" + url);
+                logger.error("SUBResolver: ERROR: xml answer doesn't match DTD for URL:" + url);
+                /*
+                writeLog("SUBResolver: ERROR: xml answer doesn't match DTD for URL:" + url);
+                
+                */ 
                 return null;
             }
             // get all child-elements and parse them
@@ -163,20 +171,26 @@ public class LocalResolverConnectorThread extends Thread {
 
             }
 
-        } catch (javax.xml.parsers.ParserConfigurationException pce) {
+        } catch (ParserConfigurationException pce) {
+            logger.error("SUBResolver: ERROR: couldn't parse XML file occured while receiving response for url: " + url, pce);
+            /*
             writeLog("SUBResolver: ERROR: couldn't parse XML file " + pce);
-            writeLog("             occured while receiving response for url:");
-            writeLog("             " + url);
+            writeLog("             occured while receiving response for url: " + url);
+            */
             return null;
-        } catch (java.io.IOException ioe) {
+        } catch (IOException ioe) {
+            logger.error("SUBResolver: ERROR: no content delivered occured while receiving response for url: " + url, ioe);
+            /*
             writeLog("SUBResolver: ERROR: no content delivered");
-            writeLog("             occured while receiving response for url:");
-            writeLog("             " + url);
+            writeLog("             occured while receiving response for url: " + url);
+            */
             return null;
-        } catch (org.xml.sax.SAXException se) {
+        } catch (SAXException se) {
+            logger.error("SUBResolver: ERROR: SAX exception occured while receiving response for url: " + url, se);
+            /*
             writeLog("SUBResolver: ERROR: SAX exception " + se);
-            writeLog("             occured while receiving response for url:");
-            writeLog("             " + url);
+            writeLog("             occured while receiving response for url: " + url);
+            */
             return null;
         }
         return allURL;
@@ -218,9 +232,12 @@ public class LocalResolverConnectorThread extends Thread {
 
         if (purlnode == null) {
             // no node with name PURL found
+            logger.warn("PURL/LPI node NOT found for URL:" + localresolverurl);
+            /*
             if (myPrefs.debug > 0) {
                 writeLog("PURL/LPI node NOT found for URL:" + localresolverurl);
             }
+            */
             return null;
         }
 
@@ -275,18 +292,22 @@ public class LocalResolverConnectorThread extends Thread {
             if (version != null) {
                 ru.setVersion(version);
             }
-
+            logger.info("SUBResolver: response from " + localresolverurl + " is: local URL:" + resolverurl);
+            /*
             if (myPrefs.debug > 5) {
                 writeLog("SUBResolver: response from " + localresolverurl + " is: local URL:" + resolverurl);
             }
-
+            */
             return ru;
 
         } else {
             // not an appropriate answer
+            logger.warn("SUBResolver: response from " + localresolverurl + " is empty or invalid");
+            /*
             if (myPrefs.debug > 0) {
                 writeLog("SUBResolver: response from " + localresolverurl + " is empty or invalid");
             }
+            */
             return null;
         }
     }
@@ -305,6 +326,7 @@ public class LocalResolverConnectorThread extends Thread {
     }
 
     //TODO: Use a Logger for this
+    /*
     private void writeLog(String inMessage) {
         if (myPrefs.getLogfile() != null) {
             // open logfile and write
@@ -320,4 +342,5 @@ public class LocalResolverConnectorThread extends Thread {
             System.out.println("Resolver-Log:" + inMessage);
         }
     }
+    */
 }
