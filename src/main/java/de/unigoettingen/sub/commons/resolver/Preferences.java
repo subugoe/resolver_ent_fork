@@ -9,6 +9,7 @@ import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.apache.log4j.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -45,11 +46,13 @@ import org.w3c.dom.NodeList;
  */
 public class Preferences {
 
+    static Logger logger = Logger.getLogger(Resolver.class.getName());
     int debug = 0;
     String logfile = null;
     String logoImage = "SUBLogo.gif";
     LinkedList resolvers = null;
     int max_threadruntime = 30000;
+    String DIRSEP;
 
     /**
      * The constructor need the filename; the preferences are read from this
@@ -59,10 +62,13 @@ public class Preferences {
      */
     public Preferences(String filename) {
 
-        String DIRSEP = System.getProperty("file.separator");
+        DIRSEP = System.getProperty("file.separator");
 
         if (!read(filename)) {
+            logger.error("ERROR: Can't read Preference file in " + filename);
+            /*
             System.err.println("ERROR: Can't read Preference file in " + filename);
+            */
         }
     }
 
@@ -73,7 +79,7 @@ public class Preferences {
      * @return true, if reading was successful, otherwise false
      */
     private boolean read(String filename) {
-        String DIRSEP = System.getProperty("file.separator");  // get seperator for directories
+        //String DIRSEP = System.getProperty("file.separator");  // get seperator for directories
 
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -114,21 +120,33 @@ public class Preferences {
                 }
             } // end of for loop
         } catch (javax.xml.parsers.ParserConfigurationException pce) {
+            logger.error("ERROR: couldn't parse XML file ", pce);
+            /*
             System.err.println("ERROR: couldn't parse XML file " + pce);
+            */
             return false;
         } catch (java.io.IOException ioe) {
+            logger.error("ERROR: Can't open xml-file " + filename, ioe);
+            /*
             System.err.println("ERROR: Can't open xml-file " + filename);
             System.err.println(ioe);
+            */
             return false;
         } catch (org.xml.sax.SAXException se) {
+            logger.error("ERROR: SAX exception ", se);
+            /*
             System.err.println("ERROR: SAX exception " + se);
+            */
             return false;
         }
 
         // check fields, which must have a value (e.h. database fields)
 
         if ((resolvers == null) || (resolvers.size() == 0)) {
+            logger.error("Preferences: - error - No indexes found");
+            /*
             System.err.println("Preferences: - error - No indexes found");
+            */
             return false;
         }
         return true;
@@ -144,7 +162,10 @@ public class Preferences {
                 if (singleresolver != null) {
                     localResolvers.add(singleresolver);
                 } else {
+                    logger.error("Error occured while reading users from preferences");
+                    /*
                     System.err.println("Error occured while reading users from preferences");
+                    */
                 }
             }
         }
@@ -157,42 +178,42 @@ public class Preferences {
      *
      * @return Returns the debug.
      */
-    public int getDebug() {
+    private int getDebug() {
         return debug;
     }
 
     /**
      * @param debug The debug to set.
      */
-    public void setDebug(int debug) {
+    private void setDebug(int debug) {
         this.debug = debug;
     }
 
     /**
      * @return Returns the logfile.
      */
-    public String getLogfile() {
+    protected String getLogfile() {
         return logfile;
     }
 
     /**
      * @param logfile The logfile to set.
      */
-    public void setLogfile(String logfile) {
+    protected void setLogfile(String logfile) {
         this.logfile = logfile;
     }
 
     /**
      * @return the max_threadruntime
      */
-    public int getMax_threadruntime() {
+    protected int getMax_threadruntime() {
         return max_threadruntime;
     }
 
     /**
      * @param max_threadruntime the max_threadruntime to set
      */
-    public void setMax_threadruntime(int max_threadruntime) {
+    protected void setMax_threadruntime(int max_threadruntime) {
         this.max_threadruntime = max_threadruntime;
     }
 
@@ -201,14 +222,14 @@ public class Preferences {
      *
      * @return the logoImage
      */
-    public String getLogoImage() {
+    protected String getLogoImage() {
         return logoImage;
     }
 
     /**
      * @param logoImage the logoImage to set
      */
-    public void setLogoImage(String logoImage) {
+    protected void setLogoImage(String logoImage) {
         this.logoImage = logoImage;
     }
 

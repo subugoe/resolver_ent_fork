@@ -91,11 +91,14 @@ public class LocalResolverConnectorThread extends Thread {
 
         } catch (HttpException e) {
             Exception ex = (Exception) e.getCause();
+            logger.error("HTTP Method failed: ", e);
+            /*
             System.out.println(e.getMessage());
             if (ex != null) {
                 System.out.println(" : " + ex);
                 ex.printStackTrace();
             }
+            */
         } catch (IOException e) {
             logger.error("SUBResolver: Fatal transport error: " + e.getMessage() + "\n             url:" + url, e);
             /*
