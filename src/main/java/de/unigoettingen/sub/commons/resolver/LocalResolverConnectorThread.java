@@ -85,7 +85,6 @@ public class LocalResolverConnectorThread extends Thread {
                 */ 
             }
 
-            //method.getResponseBodyAsString();
             InputStream responseStream = method.getResponseBodyAsStream();
             allURLs = getResponse(responseStream);
 
