@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 /**
  * Helper class to load a GIF image and output it to the output stream.
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author enders
  */
 public class ShowImage {
+    static Logger logger = Logger.getLogger(Resolver.class.getName());
     static String contentType = "image/gif";
     Preferences myPrefs = null;
     String DIRSEP;
@@ -48,9 +50,7 @@ public class ShowImage {
             }
             // finsihed reading; we are reading as long as there is something left to read
         } catch (IOException ioe) {
-            //TODO: Add a logger
-            System.out.println("IOException while reading and writing image data:");
-            System.out.println(ioe);
+            logger.warn("IOException while reading and writing image data:", ioe);
         }
     }
 }
