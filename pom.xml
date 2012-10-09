@@ -31,12 +31,26 @@
             <version>1.0.4</version>
         </dependency>
         <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.14</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    <developers>
+        <developer>
+            <id>enders</id>
+            <name>Markus Enders</name>
+            <email>Markus.Enders@bl.uk</email>
+            <roles>
+            </roles>
+        </developer>
+    </developers>
 
     <build>
         <plugins>
@@ -84,6 +98,11 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>maven-jetty-plugin</artifactId>
+        <version>6.1.10</version>
             </plugin>
         </plugins>
     </build>
