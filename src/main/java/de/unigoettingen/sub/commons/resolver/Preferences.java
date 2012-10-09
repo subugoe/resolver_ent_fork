@@ -87,7 +87,10 @@ public class Preferences {
             Node topmostelement = xmldoc.getDocumentElement();
 
             if (!topmostelement.getNodeName().equals("config")) {
+                logger.error("ERROR reading configuration file " + filename + " - doesn't seem to be a valid configuration file");
+                /*
                 System.err.println("ERROR reading configuration file " + filename + " - doesn't seem to be a valid configuration file");
+                */
             }
 
             // get all child-elements and parse them
@@ -176,30 +179,38 @@ public class Preferences {
      *
      * @return Returns the debug.
      */
+    /*
     private int getDebug() {
         return debug;
     }
+    */
 
     /**
      * @param debug The debug to set.
      */
+    /*
     private void setDebug(int debug) {
         this.debug = debug;
     }
+    */
 
     /**
      * @return Returns the logfile.
      */
+    /*
     protected String getLogfile() {
         return logfile;
     }
+    */
 
     /**
      * @param logfile The logfile to set.
      */
+    /*
     protected void setLogfile(String logfile) {
         this.logfile = logfile;
     }
+    */
 
     /**
      * @return the max_threadruntime
