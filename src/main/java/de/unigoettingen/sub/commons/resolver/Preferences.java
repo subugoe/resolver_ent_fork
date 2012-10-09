@@ -27,10 +27,9 @@ import org.xml.sax.SAXException;
  * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
  * &lt;!-- -configuration file for global SUB resolver --&gt;
  * &lt;config&gt;
- *     &lt;debug&gt;0&lt;/debug&gt;
  *     &lt;maxThreadRuntime&gt;20000&lt;/maxThreadRuntime&gt;
  *     &lt;logoImage&gt;SUBLogo.gif&lt;/logoImage&gt;
- *     &lt;logfile&gt;/usr/tomcat_srv3/resolver/logs/resolver.log&lt;/logfile&gt;
+ *     &lt;contact&gt;user@host.com&lt;/contact&gt;
  *     &lt;localresolver&gt;
  *         &lt;!-- define a single resolver; --&gt;
  *         &lt;resolver&gt;
@@ -51,7 +50,7 @@ public class Preferences {
     //int debug = 0;
     //String logfile = null;
     String logoImage = "SUBLogo.gif";
-    String contact = null;
+    String contact = "";
     LinkedList resolvers = null;
     int max_threadruntime = 30000;
     String DIRSEP;
@@ -250,6 +249,22 @@ public class Preferences {
      */
     protected void setLogoImage(String logoImage) {
         this.logoImage = logoImage;
+    }
+    
+    /**
+     * Contact
+     *
+     * @return the contact
+     */
+    protected String getContact() {
+        return contact;
+    }
+
+    /**
+     * @param contact the contsct to set
+     */
+    protected void setContact(String contact) {
+        this.contact = contact;
     }
 
     /**
