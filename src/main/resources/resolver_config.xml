@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- -configuration file for global SUB resolver -->
 <config>
+    <!--
     <debug>20</debug>
     <logfile>/var/log/tomcat5/resolver/resolver.log</logfile>
+    -->
+    <contact>kothe@sub.uni-goettingen.de</contact>
     <maxThreadRuntime>5000</maxThreadRuntime> 
     <logoImage>SUBLogo.gif</logoImage>
     <localresolver>
