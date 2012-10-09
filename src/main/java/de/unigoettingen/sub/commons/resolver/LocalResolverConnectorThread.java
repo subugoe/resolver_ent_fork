@@ -304,6 +304,7 @@ public class LocalResolverConnectorThread extends Thread {
         return null;
     }
 
+    //TODO: Use a Logger for this
     private void writeLog(String inMessage) {
         if (myPrefs.getLogfile() != null) {
             // open logfile and write
