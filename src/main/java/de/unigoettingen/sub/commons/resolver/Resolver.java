@@ -421,12 +421,25 @@ public class Resolver extends HttpServlet {
         }
     }
     */
+
+    private PrintWriter initHTMLWrite (HttpServletResponse response, HttpServletRequest request) throws ServletException {
+        // set http header
+        response.setContentType("text/html");
+        PrintWriter webout;
+        try {
+            webout = response.getWriter(); // get stream;
+        } catch (IOException ioe) {
+            logger.error("IO Exception while getting response stream ", ioe);
+            throw new ServletException("IO Exception while getting response stream ", ioe);
+        }
+        return webout;
+    }
+    
     /**
      * Method initializes the servlet: loads preferences (from
      * resolver_config.xml within the application's webapp-folder).
      *
      */
-
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         DIRSEP = System.getProperty("file.separator");
