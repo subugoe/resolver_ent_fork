@@ -107,22 +107,6 @@ public class Resolver extends HttpServlet {
         }
         String parameter = params.get(0);
 
-        // deliver an image in image path
-        //
-        //TODO: try to get rid of this
-        //if (parameter.substring(0, 4).equals("name")) {
-        //    String name = request.getParameter("name");
-        //    String filename = imagepath + DIRSEP + name;
-            /*
-         if (myPrefs.debug > 0) {
-         writeLog("SUBResolver: received request for image " + filename);
-         }
-         */
-        //    logger.info("SUBResolver: received request for image " + filename);
-        //    ShowImage si = new ShowImage(filename, response);
-        //    return;
-        //}
-
         // just ask all LocalResolver 
         // every connection in done in a seperate thread
         for (LocalResolver lr : myPrefs.getResolvers()) {
@@ -383,8 +367,6 @@ public class Resolver extends HttpServlet {
      */
     private void showHeader(PrintWriter out, HttpServletRequest request) {
         out.println("<center><table width=\"600\"><tr><td>");
-        //TODO: Link to static image
-        //out.println("<center><img width=\"20%\" src=\"" + request.getRequestURL() + "?name=" + myPrefs.getLogoImage() + "\">");
         out.println("<center><img width=\"20%\" src=\"" + myPrefs.getLogoImage() + "\"/></center>");
         out.println("<br><b>Document Resolver</b></center>");
 
@@ -403,29 +385,7 @@ public class Resolver extends HttpServlet {
         out.println("</font></td></tr></table></center>");
     }
 
-    /**
-     * Writes a log-message to the logfile; the location of th elogfile is set
-     * in the preference file.
-     *
-     * @param inMessage
-     */
-    /*
-     private void writeLog(String inMessage) {
-     if (myPrefs.getLogfile() != null) {
-     // open logfile and write
-     try {
-     BufferedWriter out = new BufferedWriter(new FileWriter(myPrefs.getLogfile(), true));
-     out.write(inMessage + "\n");
-     out.close();
-     } catch (IOException e) {
-     System.err.println("Resolver: ERROR occured while writing logfile to " + myPrefs.getLogfile());
-     System.err.println("Information which should be written to logfile was\n" + inMessage);
-     }
-     } else {
-     System.out.println("Resolver-Log:" + inMessage);
-     }
-     }
-     */
+
     private PrintWriter initHTMLWrite(HttpServletResponse response, HttpServletRequest request) throws ServletException {
         // set http header
         response.setContentType("text/html");
@@ -459,9 +419,6 @@ public class Resolver extends HttpServlet {
         //String prefix = getServletContext().getRealPath(DIRSEP + "WEB-INF");
         String configPath = getServletContext().getRealPath(".") + DIRSEP + "WEB-INF"+ DIRSEP + configFile;
         logger.info("Config Path is " + configPath);
-
-        
-
 
         logger.info("Starting  == GLOBAL SUB RESOLVER == " + version);
         /*
