@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="SUB Resolver">
+    <body>
+        <menu name="Resolver">
+            <item name="Übersicht" href="index.html"/>
+        </menu>
+        <menu ref="reports"/>
+    </body>
+</project>

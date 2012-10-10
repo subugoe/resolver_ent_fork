@@ -1,0 +1,131 @@
+ ------
+ Dokumentation des „SUB-Resolvers“
+ ------
+ Hans-Werner Hilse 
+ <mailto:hilse@sub.uni-goettingen.de>
+ ------
+ 2010-08-11
+ ------
+
+Zweck
+
+ Der Resolver ist Teil der Identifier-Strategie der SUB. Er ist zentrale Infrastruktur beim Resolving der Identifier, also beim Vorgang ihrer Auflösung zu URLs.
+
+ Dabei sollte die Infrastruktur folgende Bedingungen erfüllen:
+
+  * möglichst einfach gehalten (technisch)
+
+  * dezentral orientiert, d.h. keine zentrale Datenhaltung, sondern Zuständigkeit bei verschiedenen Abteilungen/Dienststellen, die den Resolver für eigene Anwendungen einsetzen,
+
+  * ausgehend vom Objekt, nicht von den Abteilungen/Dienststellen: Theoretisch kann für jedes Objekt auch jede die Infrastruktur benutzende Dienststelle verantwortlich sein.
+
+ Die vom System behandelten Identifier sollen ausdrücklich persistente Identifier sein. D.h. im System sollen nur solche Identifier benutzt werden, die langfristig gepflegt werden.
+
+ Für diese Pflege sind aber nicht die Betreiber der Resolving-Infrastruktur verantwortlich. Deren Aufgabe ist allein, die hier beschriebene Infrastruktur lauffähig zu halten. Die Identifier selbst müssen von den für die Pflege des identifierten Objekts verantwortlichen Personen/Abteilungen/Dienststellen gepflegt und persistent gehalten werden, da dies ohnehin keine technisch lösbare Aufgabe ist.
+
+Derzeitiger Einsatz
+
+ Die Resolver-Infrastruktur wird derzeit bei folgenden Abteilungen/Dienststellen eingesetzt:
+
+ * EPU: Webdoc-Server (webdoc.sub.gwdg.de): Erfüllt Anforderung nach Persistent Identifiern gemäß Dini-Zertifikat
+
+ * EPU: E-Dissertationen (auf Webdoc-Server): Die vergebenen Identifier werden als PURLs als Persistent Identifier benutzt und im Rahmen der URN-Meldung an die DNB verwendet
+
+ * EPU: Univerlag (u.a. auf Webdoc-Server): Vergebene Identifier werden im Rahmen der URN-Meldung an die DNB verwendet
+
+ * EPU/BIS: GoeScholar: Exaktes Nutzungsszenario unbekannt
+
+ * GDZ: Dokumentenmanagement
+
+ * DigiZeitschriften: Dokumentenmanagement
+
+Umsetzung
+
+ Die Infrastruktur besteht aus zwei Arten von Komponenten:
+
+ * Zentraler Resolver: Derzeit implementiert und aufrufbar unter {{http://resolver.sub.uni-goettingen.de/}}
+
+ * Lokale Persistent Identifier Resolver (LPIR): Werden betrieben von bzw. bei Abteilungen und Dienststellen, die Services betreiben, die via Identifier referenzierte Objekte managen.
+
+Funktionsweise
+
+ Der zentrale Resolver nimmt Anfragen in der Form <<<http://resolver.sub.uni-goettingen.de/purl/?\<LPI\>>>> an. <<<\<LPI\>>>> steht hierbei für „lokaler persistenter Identifier“. Ein solcher LPI ist ein Identifier, für den bestimmt ist, dass er lokal, also innerhalb der SUB, als solcher Persistenz hat und ein bestimmtes Objekt identifiziert. Dienststellen oder Abteilungen vergeben diese LPIs und stellen gemeinsame Konventionen zur Vergabe auf. Dabei ist ausdrücklich nicht ausgeschlossen, dass ein und derselbe LPI von mehreren Dienststellen – unabhängig voneinander – gepflegt wird.
+
+ Der Zentrale Resolver versucht nun, die Anfrage nach der Auflösung des übergebenen LPIs zu bearbeiten. Dazu:
+
+ * ist er konfiguriert mit einer Liste der angeschlossenen LPIRs der teilnehmenden Dienststellen/Abteilungen,
+
+ * stellt er parallel an alle angeschlossenen LPIRs eine Anfrage nach dem LPI,
+
+ * wartet er bei fehlenden Antworten ggf. einen (sehr kurzen, ca. 5-10s) Timeout ab,
+
+ * konsolidiert er Antworten der LPIRs:
+
+ ** hat kein LPIR einen URL zum LPI gemeldet, gibt es eine Fehlermeldung, dass der LPI nicht bekannt ist,
+
+ ** hat nur ein LPIR einen URL zum LPI gemeldet, wird eine HTTP-Weiterleitung auf diesen URL zurückgegeben
+
+ ** haben mehrere LPIR URLs zum LPI gemeldet, wird eine Auswahlliste ausgegeben, die unter Angabe zusätzlicher Informationen (derzeit nur: Name des Services, zu dem der jeweilige LPIR gehört) alle URLs listet.
+
+ Entsprechend ist die Funktion der LPIRs, Beziehungen zwischen LPIs und den zugehörigen URLs zu speichern oder zu verwalten und dem obigen Ablauf entsprechend Anfragen des zentralen Resolvers nach bestimmten LPIs zu beantworten.
+
+Kommunikationsprotokoll
+
+ Für die Kommunikation zwischen Zentralem Resolver und den angeschlossenen LPIRs wurde ein einfaches HTTP- und XML-basiertes Protokoll entwickelt.
+ Dabei fragt der zentrale Resolver beim LPIR via eines URLs an, der sich aus einem für den spezifischen LPIR beim zentralen Resolver konfigurierten URL-Präfix und dem LPI als Appendix zusammensetzt:
+
+  <<<<URL-Präfix(LPIR)><LPI>>>>
+
+ Der jeweilige LPIR antwortet mit einem kurzen XML-Dokument, das folgenden Aufbau hat:
+
++-----+
+<?xml version=“1.0“?>
+<response>
+ <header>
+  <version>0.1</version>
+ </header>
+ <resolvedLPIs>
+  <LPI>
+   <requestedLPI>webdoc-1234</requestedLPI>
+   <service>Webdoc-Server: Dissertationen</service>
+   <servicehome>http://webdoc.sub.gwdg.de</servicehome>
+   <url>http://webdoc.sub.gwdg.de/diss/2002/siebner/</url>
+   <mime>text/html</mime>
+   <version>1.0</version>
+   <access>free</access>
+   <identifier scheme="nbn:urn"
+        >urn:nbn:de:gbv:7-webdoc-1234-8</identifier> 
+  </LPI> 
+ </resolvedLPIs> 
+</response>
++-----+
+
+ Das zurückgegebene Dokument ist wie folgt strukturiert:
+
+ * Es muss ein wohlgeformtes XML-Dokument sein
+
+ * Root-Node ist das „response“-Element
+
+ * Child-Node „header“ mit eigenem Child-Node „version“, für Versionierung des Datenformats, derzeit immer „0.1“.
+
+ * Child-Node „resolvedLPIs“:
+
+  * bleibt leer, falls angefragter LPI zu keinerlei URLs aufgelöst werden kann
+
+  * enthält ansonsten für jede mögliche Auflösung (einzelner LPIR kann also auch mehrere Auflösungen anbieten) ein Child-Node „LPI“ mit folgenden Child-Nodes:
+
+   * „requestedLPI“ nur noch einmal die Wiederholung des angefragten LPIs, reine Debug- und Test-Funktion
+
+   * „service“: Bezeichnung des Services, der für die Pflege der Beziehung Identifier<->aufgelöstes Objekt zuständig ist
+
+   * „servicehome“: Informationsseite (URL) dieses Services
+
+   * „url“: URL, zu dem LPI aufgelöst wird
+
+   * „mime“: Information über MIME-Typ des URL-Ziels
+
+   * „version“: derzeit nicht benutzt, kann Angaben zur Version eines Objekts enthalten (könnte mit in Auswahlliste vom zentralen Resolver angezeigt werden)
+
+   * „access“: derzeit wohl generell „free“, könnte zur Zugriffsbeschränkung bzw. zum Rechtemanagement verwendet werden.
+
+   * beliebig viele „<identifier>“-Nodes: Können weitere Identifier angeben, die das vom LPI identifizierte Objekt hat. Attribut „schema“ identifiziert ein bestimmtes Identifier-Schema und muss verpflichtend dazu angegeben werden. Derzeit aber keinerlei entsprechende Funktionalität in zentralem Resolver implementiert.

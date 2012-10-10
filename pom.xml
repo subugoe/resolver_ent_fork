@@ -4,10 +4,9 @@
 
     <groupId>de.unigoettingen.sub.commons</groupId>
     <artifactId>resolver</artifactId>
-    <version>1.0</version>
+    <version>0.3</version>
     <packaging>war</packaging>
-
-    <name>resolver</name>
+    <name>SUB Resolver</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
