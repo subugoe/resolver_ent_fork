@@ -39,7 +39,6 @@ public class Resolver extends HttpServlet {
     Preferences myPrefs = null;
     String version = "version 0.3";
     String DIRSEP = null;
-    String imagepath = null;
 
     /**
      * Handles the servlet get-request.
@@ -57,52 +56,20 @@ public class Resolver extends HttpServlet {
 
         //	 get parameters
         logger.info("SUBResolver: received a request");
-        /*
-         if (myPrefs.getDebug() > 0) {
-         writeLog("SUBResolver: received a request");
-         }
-         */
-        //Enumeration<String> enumm = request.getParameterNames();
 
         ArrayList<String> params = Collections.list(request.getParameterNames());
-        
-        //int i = 0;
-        //int i = params.size();
+
         for (String p : params) {
-
-
-            //String parameter = null;
-        /*
-             while (enumm.hasMoreElements()) {
-             parameter = enumm.nextElement();
-             */
             logger.debug("SUBResolver: parameter=" + p);
-
-            /*
-             if (myPrefs.getDebug() > 0) {
-             writeLog("SUBResolver: parameter=" + parameter);
-             }
-             */
-            //i++;
         }
 
         if (params.isEmpty()) {
             // error handling; no parameter/identifier given
             logger.warn("SUBResolver: didn't receive a parameter");
-            /*
-             if (myPrefs.debug > 0) {
-             writeLog("SUBResolver: didn't receive a parameter");
-             }
-             */
             return;
         } else if (params.size() > 1) {
             // invalid request
             logger.warn("SUBResolver: wrong number of parameters");
-            /*
-             if (myPrefs.debug > 0) {
-             writeLog("SUBResolver: wrong number of parameters");
-             }
-             */
             return;
         }
         String parameter = params.get(0);
@@ -110,34 +77,18 @@ public class Resolver extends HttpServlet {
         // just ask all LocalResolver 
         // every connection in done in a seperate thread
         for (LocalResolver lr : myPrefs.getResolvers()) {
-            /*
-             Iterator<LocalResolver> it = myPrefs.getResolvers().iterator();
-             //i = 0;
-             while (it.hasNext()) {
-             LocalResolver lr = it.next();
-             */
             String url = lr.getURL();
             logger.info("SUBResolver: url:" + url + parameter);
-            /*
-             if (myPrefs.getDebug() > 0) {
-             writeLog("SUBResolver: url:" + url + parameter);
-             }
-             */
             LocalResolverConnectorThread rt = new LocalResolverConnectorThread(myPrefs, url + parameter, myPrefs.getMax_threadruntime());
             // create a new thread
             rt.start();   // start thread
 
             allThreads.add(rt); // add thread to groups of threads
-            //i++;
+
         }
 
         // checking, if threads are still running
         for (LocalResolverConnectorThread t : allThreads) {
-            /*
-             Iterator<LocalResolverConnectorThread> tit = allThreads.iterator();
-             while (tit.hasNext()) {
-             LocalResolverConnectorThread t = tit.next();
-             */
             try {
                 t.join(myPrefs.getMax_threadruntime());   // just wait max. 20 seconds until thread must be finished
             } catch (InterruptedException e) {
@@ -150,42 +101,14 @@ public class Resolver extends HttpServlet {
 
         LinkedList<ResolvedURL> answeredRequest = new LinkedList<ResolvedURL>();
         for (LocalResolverConnectorThread t : allThreads) {
-            /*
-             Iterator<LocalResolverConnectorThread> tit = allThreads.iterator();
-             while (tit.hasNext()) {
-             LocalResolverConnectorThread t = tit.next();
-             */
             if (t.isAlive()) {
                 // thread is finished
                 logger.info("SUBResolver: " + t.getUrl() + " thread is still running");
-                /*
-                 if (myPrefs.debug > 2) {
-                 writeLog("SUBResolver: " + t.url + " thread is still running");
-                 }
-                 */
             }
             {
                 // thread is not finsihed, so we won't have any answer
-                //System.out.println("SUBResolver: "+t.url+" thread is dead");
-                //System.out.println("SUBResolver: "+t.getResponses().size()+" responses");
                 if (t.getResponses() != null && (t.getResponses().size() > 0)) {
                     for (ResolvedURL ru : t.getResponses()) {
-                        /*
-                         Iterator<ResolvedURL> it_test = t.getResponses().iterator();
-                         while (it_test.hasNext()) {
-                         Object obj = it_test.next();
-                         ResolvedURL ru = (ResolvedURL) obj;
-                         */
-                        /*
-                         if (myPrefs.debug > 1) {
-                         writeLog("XML Response:\n"
-                         + "SUBResolver1: ru.URL: " + ru.getUrl() + "\n"
-                         + "SUBResolver1: ru.PURL:" + ru.getPurl() + "\n"
-                         + "SUBResolver1: ru.Service:" + ru.getService() + "\n"
-                         + "SUBResolver1: ru.Servicehome:" + ru.getServicehome() + "\n"
-                         + "SUBResolver1: ru.Version:" + ru.getVersion());
-                         }
-                         */
                         logger.debug("XML Response:\n"
                                 + "SUBResolver1: ru.URL: " + ru.getUrl() + "\n"
                                 + "SUBResolver1: ru.PURL:" + ru.getPurl() + "\n"
@@ -211,11 +134,6 @@ public class Resolver extends HttpServlet {
         if ((answeredRequest != null) && (answeredRequest.size() == 1)) {
             response.setContentType("text/html");
             for (ResolvedURL ru : answeredRequest) {
-                /*
-                 Iterator<ResolvedURL> it2 = answeredRequest.iterator();
-                 while (it2.hasNext()) {
-                 ResolvedURL ru = it2.next();
-                 */
                 response.setStatus(307); // temporary redirect; avoid caching
                 response.setHeader("Location", ru.url);
             }
@@ -230,20 +148,6 @@ public class Resolver extends HttpServlet {
         // just output debug information
         if ((answeredRequest != null) || (answeredRequest.size() > 0)) {
             for (ResolvedURL ru : answeredRequest) {
-                /*
-                 Iterator<ResolvedURL> it2 = answeredRequest.iterator();
-                 while (it2.hasNext()) {
-                 ResolvedURL ru = it2.next();
-                 */
-                /*
-                 if (myPrefs.getDebug() > 1) {
-                 writeLog("SUBResolver: ru.URL: " + ru.getUrl() + "\n"
-                 + "SUBResolver: ru.PURL:" + ru.getPurl() + "\n"
-                 + "SUBResolver: ru.Service:" + ru.getService() + "\n"
-                 + "SUBResolver: ru.Servicehome:" + ru.getServicehome() + "\n"
-                 + "SUBResolver: ru.Version:" + ru.getVersion());
-                 }
-                 */
                 logger.debug("SUBResolver: ru.URL: " + ru.getUrl() + "\n"
                         + "SUBResolver: ru.PURL:" + ru.getPurl() + "\n"
                         + "SUBResolver: ru.Service:" + ru.getService() + "\n"
@@ -251,7 +155,6 @@ public class Resolver extends HttpServlet {
                         + "SUBResolver: ru.Version:" + ru.getVersion());
             }
 
-            //
             // output HTML
 
             // set http header
@@ -271,11 +174,6 @@ public class Resolver extends HttpServlet {
             webout.println(" is available at:<br>");
 
             for (ResolvedURL ru : answeredRequest) {
-                /*
-                 Iterator<ResolvedURL> it3 = answeredRequest.iterator();
-                 while (it3.hasNext()) {
-                 ResolvedURL ru = it3.next();
-                 */
                 webout.println("<h4> <a href=\"" + ru.getServicehome() + "\">" + ru.getService() + "</a></h4>");
                 webout.println("go to document:&nbsp;<a href=\"" + ru.getUrl() + "\">" + ru.getUrl() + "</a>");
                 webout.println("<br>");
@@ -288,9 +186,6 @@ public class Resolver extends HttpServlet {
         } else {
             // no result
             logger.info("SUBResolver: sorry, no result");
-            /*
-             writeLog("SUBResolver: sorry, no result");
-             */
         }
     }
 
@@ -421,10 +316,7 @@ public class Resolver extends HttpServlet {
         logger.info("Config Path is " + configPath);
 
         logger.info("Starting  == GLOBAL SUB RESOLVER == " + version);
-        /*
-         System.out.println("\nstarting  == GLOBAL SUB RESOLVER ==");
-         System.out.println("          " + version + "\n");
-         */
+
         try {
             myPrefs = new Preferences(configPath);
         } catch (FileNotFoundException fe) {
@@ -432,23 +324,6 @@ public class Resolver extends HttpServlet {
         }
 
         logger.fatal("Loglevel: " + logger.getEffectiveLevel().toString() + " using Log4J");
-        /*
-         System.out.println("           debug level set to " + myPrefs.getDebug());
-         if (myPrefs.getLogfile() != null) {
-         System.out.println("           logfile set to " + myPrefs.getLogfile());
-         } else {
-         System.out.println("           no logfile defined; logging will go to System.out");
-         }
-         */
-        imagepath = getServletContext().getRealPath(DIRSEP + "images" + DIRSEP);
 
-        /*
-         if ((myPrefs.getDebug() > 0) && (myPrefs.getLogfile() != null)) {
-         writeLog("\nstarting  == GLOBAL SUB RESOLVER ==\n"
-         + "          " + version + "\n\n"
-         + "debug level: " + myPrefs.getDebug() + "\n"
-         + "logfile:     " + myPrefs.getLogfile() + "\n");
-         }
-         */
     }
 }
