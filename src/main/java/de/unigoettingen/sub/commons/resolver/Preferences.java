@@ -76,8 +76,6 @@ public class Preferences {
      * @return true, if reading was successful, otherwise false
      */
     private boolean read(String filename) throws FileNotFoundException {
-        //String DIRSEP = System.getProperty("file.separator");  // get seperator for directories
-
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
