@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
  *
  * @author enders
  */
+//TODO: Try to get rid of this, let the container handle it
 public class ShowImage {
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     static String contentType = "image/gif";
