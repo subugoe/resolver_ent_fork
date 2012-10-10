@@ -61,11 +61,11 @@ Funktionsweise
 
  * konsolidiert er Antworten der LPIRs:
 
- ** hat kein LPIR einen URL zum LPI gemeldet, gibt es eine Fehlermeldung, dass der LPI nicht bekannt ist,
+  * hat kein LPIR einen URL zum LPI gemeldet, gibt es eine Fehlermeldung, dass der LPI nicht bekannt ist,
 
- ** hat nur ein LPIR einen URL zum LPI gemeldet, wird eine HTTP-Weiterleitung auf diesen URL zurückgegeben
+  * hat nur ein LPIR einen URL zum LPI gemeldet, wird eine HTTP-Weiterleitung auf diesen URL zurückgegeben
 
- ** haben mehrere LPIR URLs zum LPI gemeldet, wird eine Auswahlliste ausgegeben, die unter Angabe zusätzlicher Informationen (derzeit nur: Name des Services, zu dem der jeweilige LPIR gehört) alle URLs listet.
+  * haben mehrere LPIR URLs zum LPI gemeldet, wird eine Auswahlliste ausgegeben, die unter Angabe zusätzlicher Informationen (derzeit nur: Name des Services, zu dem der jeweilige LPIR gehört) alle URLs listet.
 
  Entsprechend ist die Funktion der LPIRs, Beziehungen zwischen LPIs und den zugehörigen URLs zu speichern oder zu verwalten und dem obigen Ablauf entsprechend Anfragen des zentralen Resolvers nach bestimmten LPIs zu beantworten.
 
