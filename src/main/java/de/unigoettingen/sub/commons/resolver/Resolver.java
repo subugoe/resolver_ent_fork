@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
-//TODO: Replace Iterators with for loop
-
 /**
  * Servlet receives a URL with an identifier and asks different local identifier
  * resolving systems connected to indiviual document management systems if they
@@ -84,16 +82,6 @@ public class Resolver extends HttpServlet {
             //i++;
         }
         
-        if (i > 1) {
-            // invalid request
-            logger.warn("SUBResolver: wrong number of parameters");
-            /*
-            if (myPrefs.debug > 0) {
-                writeLog("SUBResolver: wrong number of parameters");
-            }
-            */
-            return;
-        }
         if (i == 0) {
             // error handling; no parameter/identifier given
             logger.warn("SUBResolver: didn't receive a parameter");
@@ -103,7 +91,17 @@ public class Resolver extends HttpServlet {
             }
             */
             return;
+        } else if (i > 1) {
+            // invalid request
+            logger.warn("SUBResolver: wrong number of parameters");
+            /*
+            if (myPrefs.debug > 0) {
+                writeLog("SUBResolver: wrong number of parameters");
+            }
+            */
+            return;
         }
+        
 
         // deliver an image in image path
         //
@@ -325,7 +323,7 @@ public class Resolver extends HttpServlet {
      * @param request
      * @throws IOException
      */
-    public void showHTML_NoHits(HttpServletResponse response, HttpServletRequest request)
+    private void showHTML_NoHits(HttpServletResponse response, HttpServletRequest request)
             throws IOException {
         PrintWriter webout;
         try {
@@ -439,7 +437,7 @@ public class Resolver extends HttpServlet {
         System.out.println("          " + version + "\n");
         */
  
-        myPrefs = new Preferences(configpath + DIRSEP + "resolver_config.xml");
+        myPrefs = new Preferences(configpath + DIRSEP + Preferences.CONFIGFILE);
         logger.fatal("Loglevel: " + logger.getLevel() + " using Log4J");
         /*
         System.out.println("           debug level set to " + myPrefs.getDebug());

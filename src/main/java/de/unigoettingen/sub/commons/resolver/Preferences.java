@@ -50,6 +50,7 @@ public class Preferences {
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     //int debug = 0;
     //String logfile = null;
+    public static String CONFIGFILE = "resolver_config.xml";
     private String logoImage = "SUBLogo.gif";
     private String contact = "";
     private LinkedList<LocalResolver> resolvers = null;
