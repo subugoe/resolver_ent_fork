@@ -93,8 +93,7 @@ Kommunikationsprotokoll
    <mime>text/html</mime>
    <version>1.0</version>
    <access>free</access>
-   <identifier scheme="nbn:urn"
-        >urn:nbn:de:gbv:7-webdoc-1234-8</identifier> 
+   <identifier scheme="nbn:urn">urn:nbn:de:gbv:7-webdoc-1234-8</identifier> 
   </LPI> 
  </resolvedLPIs> 
 </response>
