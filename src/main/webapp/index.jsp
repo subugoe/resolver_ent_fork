@@ -13,6 +13,6 @@
     </head>
     <body>
         <h1>Usage</h1>
-        <p>Just pass an idedentifier as query string.</p>
+        <p>Just pass an idedentifier as query string after the prefix "purl?".</p>
     </body>
 </html>
