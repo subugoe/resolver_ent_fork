@@ -7,6 +7,7 @@ package de.unigoettingen.sub.commons.resolver;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,11 +50,11 @@ public class Preferences {
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     //int debug = 0;
     //String logfile = null;
-    String logoImage = "SUBLogo.gif";
-    String contact = "";
-    LinkedList<LocalResolver> resolvers = null;
-    int max_threadruntime = 30000;
-    String DIRSEP;
+    private String logoImage = "SUBLogo.gif";
+    private String contact = "";
+    private LinkedList<LocalResolver> resolvers = null;
+    private int max_threadruntime = 30000;
+    private String DIRSEP;
 
     /**
      * The constructor need the filename; the preferences are read from this
@@ -271,6 +272,15 @@ public class Preferences {
     }
 
     /**
+     * Reolvers
+     *
+     * @return the resolvers
+     */
+    protected List<LocalResolver> getResolvers() {
+        return resolvers;
+    }
+    
+    /**
      * Reads the data for a single LPIR (local resolver)
      *
      * @param inNode
@@ -321,4 +331,6 @@ public class Preferences {
         }
         return null;
     }
+    
+    
 }
