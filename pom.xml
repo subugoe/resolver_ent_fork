@@ -66,6 +66,23 @@
             <name>Markus Enders</name>
             <email>Markus.Enders@bl.uk</email>
             <roles>
+                <role>develper</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>mahnke</id>
+            <name>Christian Mahnke</name>
+            <email>mahnke@sub.uni-goettingen.de</email>
+            <roles>
+                <role>build manager</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>hilse</id>
+            <name>Hans-Werner Hilse</name>
+            <email>hilse@sub.uni-goettingen.de</email>
+            <roles>
+                <role>documentation</role>
             </roles>
         </developer>
     </developers>
@@ -118,9 +135,9 @@
                 </executions>
             </plugin>
             <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>6.1.10</version>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.10</version>
             </plugin>
         </plugins>
     </build>
