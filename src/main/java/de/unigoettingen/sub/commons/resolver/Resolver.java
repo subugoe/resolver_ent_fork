@@ -130,7 +130,6 @@ public class Resolver extends HttpServlet {
         }
 
         // just one hit; do a redirect
-
         if ((answeredRequest != null) && (answeredRequest.size() == 1)) {
             response.setContentType("text/html");
             for (ResolvedURL ru : answeredRequest) {
