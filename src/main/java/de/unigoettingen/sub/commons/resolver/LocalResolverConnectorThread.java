@@ -37,12 +37,12 @@ public class LocalResolverConnectorThread extends Thread {
 
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     //boolean running = false;
-    Preferences myPrefs;
-    String url;
-    int timeout;
+    private Preferences myPrefs;
+    private String url;
+    private int timeout;
     //boolean finished = false;
-    LinkedList allURLs;
-    String localresolverurl = null; // URL or the local resolver to connect for resolution
+    private LinkedList<ResolvedURL> allURLs;
+    private String localresolverurl = null; // URL or the local resolver to connect for resolution
 
     public LocalResolverConnectorThread(Preferences inPrefs, String inUrl, int inTimeout) {
         //running = true;
@@ -136,9 +136,9 @@ public class LocalResolverConnectorThread extends Thread {
      * @param responseStream
      * @return LinkedList containing <pre>ResolvedURL</pre> objects
      */
-    private LinkedList getResponse(InputStream responseStream) {
+    private LinkedList<ResolvedURL> getResponse(InputStream responseStream) {
 
-        LinkedList allURL = new LinkedList();
+        LinkedList<ResolvedURL> allURL = new LinkedList();
 
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -346,4 +346,13 @@ public class LocalResolverConnectorThread extends Thread {
         }
     }
     */
+    
+    /**
+     * url
+     *
+     * @return the url
+     */
+    public String getUrl() {
+        return url;
+    }
 }

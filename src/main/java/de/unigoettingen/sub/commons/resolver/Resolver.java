@@ -77,6 +77,7 @@ public class Resolver extends HttpServlet {
             */
             i++;
         }
+        
         if (i > 1) {
             // invalid request
             logger.warn("SUBResolver: wrong number of parameters");
@@ -163,7 +164,7 @@ public class Resolver extends HttpServlet {
         */    
             if (t.isAlive()) {
                 // thread is finished
-                logger.info("SUBResolver: " + t.url + " thread is still running");
+                logger.info("SUBResolver: " + t.getUrl() + " thread is still running");
                 /*
                 if (myPrefs.debug > 2) {
                     writeLog("SUBResolver: " + t.url + " thread is still running");
