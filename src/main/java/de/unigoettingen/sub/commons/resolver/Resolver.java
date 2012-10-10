@@ -54,7 +54,7 @@ public class Resolver extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        LinkedList<LocalResolverConnectorThread> allThreads = new LinkedList();
+        LinkedList<LocalResolverConnectorThread> allThreads = new LinkedList<LocalResolverConnectorThread>();
 
         //	 get parameters
         logger.info("SUBResolver: received a request");
@@ -110,18 +110,19 @@ public class Resolver extends HttpServlet {
 
         // deliver an image in image path
         //
-        if (parameter.substring(0, 4).equals("name")) {
-            String name = request.getParameter("name");
-            String filename = imagepath + DIRSEP + name;
+        //TODO: try to get rid of this
+        //if (parameter.substring(0, 4).equals("name")) {
+        //    String name = request.getParameter("name");
+        //    String filename = imagepath + DIRSEP + name;
             /*
             if (myPrefs.debug > 0) {
                 writeLog("SUBResolver: received request for image " + filename);
             }
             */
-            logger.info("SUBResolver: received request for image " + filename);
-            ShowImage si = new ShowImage(filename, response);
-            return;
-        }
+        //    logger.info("SUBResolver: received request for image " + filename);
+        //    ShowImage si = new ShowImage(filename, response);
+        //    return;
+        //}
 
         // just ask all LocalResolver 
         // every connection in done in a seperate thread
@@ -164,7 +165,7 @@ public class Resolver extends HttpServlet {
             }
         }
 
-        LinkedList<ResolvedURL> answeredRequest = new LinkedList();
+        LinkedList<ResolvedURL> answeredRequest = new LinkedList<ResolvedURL>();
         for (LocalResolverConnectorThread t: allThreads) {
         /*
         Iterator<LocalResolverConnectorThread> tit = allThreads.iterator();
@@ -383,7 +384,9 @@ public class Resolver extends HttpServlet {
      */
     private void showHeader(PrintWriter out, HttpServletRequest request) {
         out.println("<center><table width=\"600\"><tr><td>");
-        out.println("<center><img width=\"20%\" src=\"" + request.getRequestURL() + "?name=" + myPrefs.getLogoImage() + "\">");
+        //TODO: Link to static image
+        //out.println("<center><img width=\"20%\" src=\"" + request.getRequestURL() + "?name=" + myPrefs.getLogoImage() + "\">");
+        out.println("<center><img width=\"20%\" src=\"" + myPrefs.getLogoImage() + "\"/></center>");
         out.println("<br><b>Document Resolver</b></center>");
 
         out.println("</td></tr></table></center>");
