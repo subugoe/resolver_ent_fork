@@ -37,7 +37,6 @@ public class Resolver extends HttpServlet {
     /**
      *
      */
-    //static String errorMailAdress = "kothe@sub.uni-goettingen.de";
     private static final long serialVersionUID = 0022001;
     Preferences myPrefs = null;
     String version = "version 0.3";
@@ -116,10 +115,10 @@ public class Resolver extends HttpServlet {
 
         // just ask all LocalResolver 
         // every connection in done in a seperate thread
-        Iterator it = myPrefs.resolvers.iterator();
+        Iterator<LocalResolver> it = myPrefs.resolvers.iterator();
         i = 0;
         while (it.hasNext()) {
-            LocalResolver lr = (LocalResolver) it.next();
+            LocalResolver lr = it.next();
             String url = lr.getURL();
             logger.info("SUBResolver: url:" + url + parameter);
             /*
@@ -136,9 +135,12 @@ public class Resolver extends HttpServlet {
         }
 
         // checking, if threads are still running
-        it = allThreads.iterator();
-        while (it.hasNext()) {
-            LocalResolverConnectorThread t = (LocalResolverConnectorThread) it.next();
+        for (LocalResolverConnectorThread t: allThreads) {
+        /*
+        Iterator<LocalResolverConnectorThread> tit = allThreads.iterator();
+        while (tit.hasNext()) {
+            LocalResolverConnectorThread t = tit.next();
+        */
             try {
                 t.join(myPrefs.getMax_threadruntime());   // just wait max. 20 seconds until thread must be finished
             } catch (InterruptedException e) {
@@ -150,10 +152,12 @@ public class Resolver extends HttpServlet {
         }
 
         LinkedList<ResolvedURL> answeredRequest = new LinkedList();
-        //Iterator<LocalResolverConnectorThread>
-        it = allThreads.iterator();
-        while (it.hasNext()) {
-            LocalResolverConnectorThread t = (LocalResolverConnectorThread) it.next();
+        for (LocalResolverConnectorThread t: allThreads) {
+        /*
+        Iterator<LocalResolverConnectorThread> tit = allThreads.iterator();
+        while (tit.hasNext()) {
+            LocalResolverConnectorThread t = tit.next();
+        */    
             if (t.isAlive()) {
                 // thread is finished
                 logger.info("SUBResolver: " + t.url + " thread is still running");
@@ -222,9 +226,12 @@ public class Resolver extends HttpServlet {
 
         // just output debug information
         if ((answeredRequest != null) || (answeredRequest.size() > 0)) {
+            for (ResolvedURL ru: answeredRequest) {
+            /*
             Iterator<ResolvedURL> it2 = answeredRequest.iterator();
             while (it2.hasNext()) {
                 ResolvedURL ru = it2.next();
+            */
                 /*
                 if (myPrefs.getDebug() > 1) {
                     writeLog("SUBResolver: ru.URL: " + ru.getUrl() + "\n"
@@ -260,9 +267,12 @@ public class Resolver extends HttpServlet {
             webout.println("" + request.getRequestURL() + "?" + parameter);
             webout.println(" is available at:<br>");
 
+            for (ResolvedURL ru: answeredRequest) {
+            /*
             Iterator<ResolvedURL> it3 = answeredRequest.iterator();
             while (it3.hasNext()) {
                 ResolvedURL ru = it3.next();
+            */
                 webout.println("<h4> <a href=\"" + ru.getServicehome() + "\">" + ru.getService() + "</a></h4>");
                 webout.println("go to document:&nbsp;<a href=\"" + ru.getUrl() + "\">" + ru.getUrl() + "</a>");
                 webout.println("<br>");
