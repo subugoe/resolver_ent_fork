@@ -7,4 +7,8 @@ Running from Maven
 
 Generating the documentation
 ----------------------------
->mvn site
+> mvn site
+
+Creating a deployable file
+--------------------------
+> mvn package
