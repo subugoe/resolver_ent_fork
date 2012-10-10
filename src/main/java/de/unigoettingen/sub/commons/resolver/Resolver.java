@@ -115,10 +115,13 @@ public class Resolver extends HttpServlet {
 
         // just ask all LocalResolver 
         // every connection in done in a seperate thread
-        Iterator<LocalResolver> it = myPrefs.resolvers.iterator();
-        i = 0;
+        for (LocalResolver lr: myPrefs.getResolvers()) {
+        /*
+        Iterator<LocalResolver> it = myPrefs.getResolvers().iterator();
+        //i = 0;
         while (it.hasNext()) {
             LocalResolver lr = it.next();
+        */
             String url = lr.getURL();
             logger.info("SUBResolver: url:" + url + parameter);
             /*
@@ -131,7 +134,7 @@ public class Resolver extends HttpServlet {
             rt.start();   // start thread
 
             allThreads.add(rt); // add thread to groups of threads
-            i++;
+            //i++;
         }
 
         // checking, if threads are still running
@@ -210,9 +213,12 @@ public class Resolver extends HttpServlet {
 
         if ((answeredRequest != null) && (answeredRequest.size() == 1)) {
             response.setContentType("text/html");
+            for (ResolvedURL ru: answeredRequest) {
+            /*
             Iterator<ResolvedURL> it2 = answeredRequest.iterator();
             while (it2.hasNext()) {
                 ResolvedURL ru = it2.next();
+            */
                 response.setStatus(307); // temporary redirect; avoid caching
                 response.setHeader("Location", ru.url);
             }
