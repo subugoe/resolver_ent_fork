@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import java.util.Enumeration;
+//import java.util.Enumeration;
 import java.util.LinkedList;
 
 import javax.servlet.ServletConfig;
@@ -63,18 +63,21 @@ public class Resolver extends HttpServlet {
             writeLog("SUBResolver: received a request");
         }
         */
-        Enumeration<String> enumm = request.getParameterNames();
+        //Enumeration<String> enumm = request.getParameterNames();
 
         ArrayList<String> params = Collections.list(request.getParameterNames());
-        
+        String parameter = params.get(0);
         //int i = 0;
-        int i = params.size();
-        //for (String parameter: params) {
- 
-        String parameter = null;
+        //int i = params.size();
+        for (String p: params) {
+        
+        
+        //String parameter = null;
+        /*
         while (enumm.hasMoreElements()) {
             parameter = enumm.nextElement();
-            logger.debug("SUBResolver: parameter=" + parameter);
+        */
+            logger.debug("SUBResolver: parameter=" + p);
 
             /*
             if (myPrefs.getDebug() > 0) {
@@ -84,7 +87,7 @@ public class Resolver extends HttpServlet {
             //i++;
         }
         
-        if (i == 0) {
+        if (params.isEmpty()) {
             // error handling; no parameter/identifier given
             logger.warn("SUBResolver: didn't receive a parameter");
             /*
@@ -93,7 +96,7 @@ public class Resolver extends HttpServlet {
             }
             */
             return;
-        } else if (i > 1) {
+        } else if (params.size() > 1) {
             // invalid request
             logger.warn("SUBResolver: wrong number of parameters");
             /*
