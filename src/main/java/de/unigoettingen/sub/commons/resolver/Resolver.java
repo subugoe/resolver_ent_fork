@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.servlet.ServletException;
@@ -34,9 +33,7 @@ import org.apache.log4j.Logger;
  */
 public class Resolver extends HttpServlet {
     static Logger logger = Logger.getLogger(Resolver.class.getName());
-    /**
-     *
-     */
+
     private static final long serialVersionUID = 0022001;
     Preferences myPrefs = null;
     String version = "version 0.3";
@@ -176,10 +173,13 @@ public class Resolver extends HttpServlet {
                 //System.out.println("SUBResolver: "+t.url+" thread is dead");
                 //System.out.println("SUBResolver: "+t.getResponses().size()+" responses");
                 if (t.getResponses() != null && (t.getResponses().size() > 0)) {
-                    Iterator it_test = t.getResponses().iterator();
+                    for (ResolvedURL ru: t.getResponses()) {
+                    /*
+                    Iterator<ResolvedURL> it_test = t.getResponses().iterator();
                     while (it_test.hasNext()) {
                         Object obj = it_test.next();
                         ResolvedURL ru = (ResolvedURL) obj;
+                    */
                         /*
                         if (myPrefs.debug > 1) {
                             writeLog("XML Response:\n"

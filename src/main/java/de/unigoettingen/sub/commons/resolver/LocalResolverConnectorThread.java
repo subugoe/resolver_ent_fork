@@ -124,7 +124,7 @@ public class LocalResolverConnectorThread extends Thread {
      *
      * @return a LinkedList containing <pre>ResolvedURL</pre> objects.
      */
-    public LinkedList getResponses() {
+    public LinkedList<ResolvedURL> getResponses() {
         return allURLs;
     }
 
