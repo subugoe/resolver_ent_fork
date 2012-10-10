@@ -89,7 +89,7 @@ public class LocalResolverConnectorThread extends Thread {
             allURLs = getResponse(responseStream);
 
         } catch (HttpException e) {
-            Exception ex = (Exception) e.getCause();
+            //Exception ex = (Exception) e.getCause();
             logger.error("HTTP Method failed: ", e);
             /*
             System.out.println(e.getMessage());
