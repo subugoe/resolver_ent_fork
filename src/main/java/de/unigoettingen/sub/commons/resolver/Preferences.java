@@ -47,10 +47,7 @@ import org.xml.sax.SAXException;
  *
  */
 public class Preferences {
-
     static Logger logger = Logger.getLogger(Resolver.class.getName());
-    //int debug = 0;
-    //String logfile = null;
     public static String CONFIGFILE = "resolver_config.xml";
     private String logoImage = "SUBLogo.gif";
     private String contact = "";
@@ -65,14 +62,10 @@ public class Preferences {
      * @param filename
      */
     public Preferences(String filename) throws FileNotFoundException {
-
         DIRSEP = System.getProperty("file.separator");
 
         if (!read(filename)) {
             logger.error("ERROR: Can't read Preference file in " + filename);
-            /*
-            System.err.println("ERROR: Can't read Preference file in " + filename);
-            */
         }
     }
 
@@ -94,9 +87,6 @@ public class Preferences {
 
             if (!topmostelement.getNodeName().equals("config")) {
                 logger.error("ERROR reading configuration file " + filename + " - doesn't seem to be a valid configuration file");
-                /*
-                System.err.println("ERROR reading configuration file " + filename + " - doesn't seem to be a valid configuration file");
-                */
             }
 
             // get all child-elements and parse them
@@ -110,21 +100,10 @@ public class Preferences {
                     if (singlenode.getNodeName().equals("localresolver")) {		// read list of all types, which are serials 
                         resolvers = readAllLocalResolvers(singlenode);
                     }
-                    /*
-                    if (singlenode.getNodeName().equals("debug")) {
-                        String debug_str = getValueOfElement(singlenode);
-                        debug = Integer.parseInt(debug_str);
-                    }
-                    */
                     if (singlenode.getNodeName().equals("maxThreadRuntime")) {
                         String debug_str = getValueOfElement(singlenode);
                         max_threadruntime = Integer.parseInt(debug_str);
                     }
-                    /*
-                    if (singlenode.getNodeName().equals("logfile")) {
-                        logfile = getValueOfElement(singlenode);
-                    }
-                    */
                     if (singlenode.getNodeName().equals("contact")) {
                         contact = getValueOfElement(singlenode);
                     }
@@ -137,32 +116,18 @@ public class Preferences {
             } // end of for loop
         } catch (ParserConfigurationException pce) {
             logger.error("ERROR: couldn't parse XML file ", pce);
-            /*
-            System.err.println("ERROR: couldn't parse XML file " + pce);
-            */
             return false;
         } catch (IOException ioe) {
             logger.error("ERROR: Can't open xml-file " + filename, ioe);
-            /*
-            System.err.println("ERROR: Can't open xml-file " + filename);
-            System.err.println(ioe);
-            */
             return false;
         } catch (SAXException se) {
             logger.error("ERROR: SAX exception ", se);
-            /*
-            System.err.println("ERROR: SAX exception " + se);
-            */
             return false;
         }
 
         // check fields, which must have a value (e.h. database fields)
-
         if ((resolvers == null) || (resolvers.size() == 0)) {
             logger.error("Preferences: - error - No indexes found");
-            /*
-            System.err.println("Preferences: - error - No indexes found");
-            */
             return false;
         }
         return true;
@@ -179,53 +144,12 @@ public class Preferences {
                     localResolvers.add(singleresolver);
                 } else {
                     logger.error("Error occured while reading users from preferences");
-                    /*
-                    System.err.println("Error occured while reading users from preferences");
-                    */
                 }
             }
         }
         return localResolvers;
     }
 
-    /**
-     * get value of <debug> element; this value set's the log level for
-     * debugging purposes.
-     *
-     * @return Returns the debug.
-     */
-    /*
-    private int getDebug() {
-        return debug;
-    }
-    */
-
-    /**
-     * @param debug The debug to set.
-     */
-    /*
-    private void setDebug(int debug) {
-        this.debug = debug;
-    }
-    */
-
-    /**
-     * @return Returns the logfile.
-     */
-    /*
-    protected String getLogfile() {
-        return logfile;
-    }
-    */
-
-    /**
-     * @param logfile The logfile to set.
-     */
-    /*
-    protected void setLogfile(String logfile) {
-        this.logfile = logfile;
-    }
-    */
 
     /**
      * @return the max_threadruntime
