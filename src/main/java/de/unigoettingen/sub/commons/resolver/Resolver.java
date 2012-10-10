@@ -6,6 +6,8 @@ package de.unigoettingen.sub.commons.resolver;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -62,17 +64,24 @@ public class Resolver extends HttpServlet {
         }
         */
         Enumeration<String> enumm = request.getParameterNames();
-        int i = 0;
+
+        ArrayList<String> params = Collections.list(request.getParameterNames());
+        
+        //int i = 0;
+        int i = params.size();
+        //for (String parameter: params) {
+ 
         String parameter = null;
         while (enumm.hasMoreElements()) {
             parameter = enumm.nextElement();
             logger.debug("SUBResolver: parameter=" + parameter);
+
             /*
             if (myPrefs.getDebug() > 0) {
                 writeLog("SUBResolver: parameter=" + parameter);
             }
             */
-            i++;
+            //i++;
         }
         
         if (i > 1) {
