@@ -51,7 +51,7 @@ public class Preferences {
     //String logfile = null;
     String logoImage = "SUBLogo.gif";
     String contact = "";
-    LinkedList resolvers = null;
+    LinkedList<LocalResolver> resolvers = null;
     int max_threadruntime = 30000;
     String DIRSEP;
 
@@ -165,8 +165,8 @@ public class Preferences {
         return true;
     }
 
-    private LinkedList readAllLocalResolvers(Node inNode) {
-        LinkedList localResolvers = new LinkedList();
+    private LinkedList<LocalResolver> readAllLocalResolvers(Node inNode) {
+        LinkedList<LocalResolver> localResolvers = new LinkedList<LocalResolver>();
         NodeList allnodes = inNode.getChildNodes();
         for (int i = 0; i < allnodes.getLength(); i++) {
             Node singlenode = allnodes.item(i);
