@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- -configuration file for global SUB resolver -->
+<config>
+    <!--
+    <debug>20</debug>
+    <logfile>/var/log/tomcat5/resolver/resolver.log</logfile>
+    -->
+    <contact>kothe@sub.uni-goettingen.de</contact>
+    <maxThreadRuntime>5000</maxThreadRuntime> 
+    <logoImage>./images/SUBLogo.gif</logoImage>
+    <localresolver>
+        <!-- define a single resolver; -->
+        <!-- <resolver>
+		<name>Webdoc (Interims Reslolver)</name>
+		<url>http://webdoc.sub.gwdg.de/pi/index.php?lpi=</url>
+	</resolver> --> 
+        <!-- <resolver>
+            <name>Göttingen Digitalisierungszentrum</name>
+            <url>http://dz-srv1.sub.uni-goettingen.de/cgi-bin/digbib.cgi?xml&amp;</url>
+        </resolver> -->
+        <resolver>
+            <name>Hans-Werners Server</name>
+            <!-- <url>http://arbeit.hilses.de/hw/pi?lpi= </url> -->
+<!--    	    <url>http://www.sub.uni-goettingen.de/scripts/persistent-identifier/?lpi=</url> -->
+    	    <url>http://w3a.sub.uni-goettingen.de/scripts/persistent-identifier/?lpi=</url>
+        </resolver>
+<!--
+        <resolver>
+            <name>DigiZeitschriften</name>
+            <url>http://www.digizeitschriften.de/resolvexml/</url>
+        </resolver>
+//-->
+        <resolver>
+            <name>DigiZeitschriften</name>
+            <url>http://www.digizeitschriften.de/index.php?id=resolvexml&amp;PPN=</url>
+        </resolver>
+       <resolver>
+           <name>Uni-Verlag</name>
+           <url>http://www.univerlag.uni-goettingen.de/content/purl/?lpi=</url>
+        </resolver>
+        <resolver>
+            <name>Göttingen Digitalisierungszentrum</name>
+            <url>http://gdz.sub.uni-goettingen.de/dms/resolvexml/?</url>
+        </resolver>
+<!--
+        <resolver>
+            <name>GoeScholar Publication Server</name>
+            <url>http://goedoc.uni-goettingen.de:8080/goescholar/resolvexml/</url>
+        </resolver>
+//-->
+        <resolver>
+            <name>Goescholar: Publication Server Uni Götttingen</name>
+            <url>http://134.76.163.170:8080/jspui/resolvexml/</url>           
+        </resolver> 
+    </localresolver>
+</config>

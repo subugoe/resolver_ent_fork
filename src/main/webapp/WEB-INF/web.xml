@@ -13,7 +13,7 @@
 	<servlet-mapping>
 		<servlet-name>resolver</servlet-name>
         <!-- <url-pattern>/digbib.cgi</url-pattern> -->
-	             <url-pattern>/</url-pattern>
+	             <url-pattern>/purl</url-pattern>
 	</servlet-mapping>
 	<session-config>
 		<session-timeout>60</session-timeout>
