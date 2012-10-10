@@ -443,12 +443,13 @@ public class Resolver extends HttpServlet {
      * resolver_config.xml within the application's webapp-folder).
      *
      */
+    @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         DIRSEP = System.getProperty("file.separator");
         
         String configFile;
-        if (config.getInitParameter("config") == null || config.getInitParameter("config") == "") {
+        if (config.getInitParameter("config") == null || "".equals(config.getInitParameter("config"))) {
             configFile = Preferences.CONFIGFILE;
         } else {
             configFile = config.getInitParameter("config");
