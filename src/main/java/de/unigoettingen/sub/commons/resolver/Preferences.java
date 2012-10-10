@@ -125,6 +125,9 @@ public class Preferences {
                     if (singlenode.getNodeName().equals("contact")) {
                         contact = getValueOfElement(singlenode);
                     }
+                    if (singlenode.getNodeName().equals("logoImage")) {
+                        logoImage = getValueOfElement(singlenode);
+                    }
                 } else {
                     continue; // next iteration in loop
                 }
