@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
 public class Preferences {
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     public static String CONFIGFILE = "resolver_config.xml";
-    private String logoImage = "SUBLogo.gif";
+    private String logoImage = "./images/SUBLogo.gif";
     private String contact = "";
     private LinkedList<LocalResolver> resolvers = null;
     private int max_threadruntime = 30000;
