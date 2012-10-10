@@ -56,7 +56,7 @@ public class Resolver extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        LinkedList allThreads = new LinkedList();
+        LinkedList<LocalResolverConnectorThread> allThreads = new LinkedList();
 
         //	 get parameters
         logger.info("SUBResolver: received a request");
@@ -65,11 +65,11 @@ public class Resolver extends HttpServlet {
             writeLog("SUBResolver: received a request");
         }
         */
-        Enumeration enumm = request.getParameterNames();
+        Enumeration<String> enumm = request.getParameterNames();
         int i = 0;
         String parameter = null;
         while (enumm.hasMoreElements()) {
-            parameter = (String) enumm.nextElement();
+            parameter = enumm.nextElement();
             logger.debug("SUBResolver: parameter=" + parameter);
             /*
             if (myPrefs.getDebug() > 0) {
@@ -116,7 +116,6 @@ public class Resolver extends HttpServlet {
 
         // just ask all LocalResolver 
         // every connection in done in a seperate thread
-
         Iterator it = myPrefs.resolvers.iterator();
         i = 0;
         while (it.hasNext()) {
@@ -150,7 +149,8 @@ public class Resolver extends HttpServlet {
             }
         }
 
-        LinkedList answeredRequest = new LinkedList();
+        LinkedList<ResolvedURL> answeredRequest = new LinkedList();
+        //Iterator<LocalResolverConnectorThread>
         it = allThreads.iterator();
         while (it.hasNext()) {
             LocalResolverConnectorThread t = (LocalResolverConnectorThread) it.next();
@@ -206,9 +206,9 @@ public class Resolver extends HttpServlet {
 
         if ((answeredRequest != null) && (answeredRequest.size() == 1)) {
             response.setContentType("text/html");
-            Iterator it2 = answeredRequest.iterator();
+            Iterator<ResolvedURL> it2 = answeredRequest.iterator();
             while (it2.hasNext()) {
-                ResolvedURL ru = (ResolvedURL) it2.next();
+                ResolvedURL ru = it2.next();
                 response.setStatus(307); // temporary redirect; avoid caching
                 response.setHeader("Location", ru.url);
             }
@@ -222,9 +222,9 @@ public class Resolver extends HttpServlet {
 
         // just output debug information
         if ((answeredRequest != null) || (answeredRequest.size() > 0)) {
-            Iterator it2 = answeredRequest.iterator();
+            Iterator<ResolvedURL> it2 = answeredRequest.iterator();
             while (it2.hasNext()) {
-                ResolvedURL ru = (ResolvedURL) it2.next();
+                ResolvedURL ru = it2.next();
                 /*
                 if (myPrefs.getDebug() > 1) {
                     writeLog("SUBResolver: ru.URL: " + ru.getUrl() + "\n"
@@ -260,9 +260,9 @@ public class Resolver extends HttpServlet {
             webout.println("" + request.getRequestURL() + "?" + parameter);
             webout.println(" is available at:<br>");
 
-            Iterator it3 = answeredRequest.iterator();
+            Iterator<ResolvedURL> it3 = answeredRequest.iterator();
             while (it3.hasNext()) {
-                ResolvedURL ru = (ResolvedURL) it3.next();
+                ResolvedURL ru = it3.next();
                 webout.println("<h4> <a href=\"" + ru.getServicehome() + "\">" + ru.getService() + "</a></h4>");
                 webout.println("go to document:&nbsp;<a href=\"" + ru.getUrl() + "\">" + ru.getUrl() + "</a>");
                 webout.println("<br>");
@@ -305,6 +305,7 @@ public class Resolver extends HttpServlet {
         try {
             webout = response.getWriter(); // get stream;
         } catch (IOException ioe) {
+            logger.error("IO Exception while getting response stream", ioe);
             return;
         }
         webout.println("<html><head>");
@@ -333,6 +334,7 @@ public class Resolver extends HttpServlet {
         try {
             webout = response.getWriter(); // get stream;
         } catch (IOException ioe) {
+            logger.error("IO Exception while getting response stream", ioe);
             return;
         }
         webout.println("<html><head>");
