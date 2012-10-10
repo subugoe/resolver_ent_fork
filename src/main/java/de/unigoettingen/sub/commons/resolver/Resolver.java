@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -424,10 +425,18 @@ public class Resolver extends HttpServlet {
      * resolver_config.xml within the application's webapp-folder).
      *
      */
-    @Override
-    public void init() {
 
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
         DIRSEP = System.getProperty("file.separator");
+        
+        String configFile;
+        if (config.getInitParameter("config") == null || config.getInitParameter("config") == "") {
+            configFile = Preferences.CONFIGFILE;
+        } else {
+            configFile = config.getInitParameter("config");
+        }
+        
         String prefix = getServletContext().getRealPath(DIRSEP + "WEB-INF");
         String configpath = prefix + DIRSEP;
         
@@ -437,7 +446,7 @@ public class Resolver extends HttpServlet {
         System.out.println("          " + version + "\n");
         */
  
-        myPrefs = new Preferences(configpath + DIRSEP + Preferences.CONFIGFILE);
+        myPrefs = new Preferences(configpath + DIRSEP + configFile);
         logger.fatal("Loglevel: " + logger.getLevel() + " using Log4J");
         /*
         System.out.println("           debug level set to " + myPrefs.getDebug());
