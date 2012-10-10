@@ -5,6 +5,7 @@
 package de.unigoettingen.sub.commons.resolver;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class Preferences {
      *
      * @param filename
      */
-    public Preferences(String filename) {
+    public Preferences(String filename) throws FileNotFoundException {
 
         DIRSEP = System.getProperty("file.separator");
 
@@ -81,7 +82,7 @@ public class Preferences {
      * @param filename
      * @return true, if reading was successful, otherwise false
      */
-    private boolean read(String filename) {
+    private boolean read(String filename) throws FileNotFoundException {
         //String DIRSEP = System.getProperty("file.separator");  // get seperator for directories
 
         try {

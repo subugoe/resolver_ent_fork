@@ -4,6 +4,7 @@
  */
 package de.unigoettingen.sub.commons.resolver;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -445,8 +446,12 @@ public class Resolver extends HttpServlet {
         System.out.println("\nstarting  == GLOBAL SUB RESOLVER ==");
         System.out.println("          " + version + "\n");
         */
- 
-        myPrefs = new Preferences(configpath + DIRSEP + configFile);
+        try {
+            myPrefs = new Preferences(configpath + DIRSEP + configFile);
+        } catch (FileNotFoundException fe) {
+            throw new ServletException("Configuration File not found!", fe);
+        }
+        
         logger.fatal("Loglevel: " + logger.getLevel() + " using Log4J");
         /*
         System.out.println("           debug level set to " + myPrefs.getDebug());
