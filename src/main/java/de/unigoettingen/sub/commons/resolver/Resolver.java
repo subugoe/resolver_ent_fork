@@ -151,15 +151,10 @@ public class Resolver extends HttpServlet {
             }
 
             // output HTML
-            webout.println(HTML_START);
-            webout.println(TITLE);
-            webout.println(HEAD_BODY);
-
-            showHeader(webout);
-
-            webout.println("<center><table width=\"600\"><tr><td>"
-                    + "The document you requested " + request.getRequestURL() + "?" + parameter);
-            webout.println(" is available at:<br>");
+            webout.println(HTML_START + TITLE + HEAD_BODY + showHeader()
+                    + "<center><table width=\"600\"><tr><td>"
+                    + "The document you requested " + request.getRequestURL() + "?" + parameter
+                    + " is available at:<br>");
 
             for (ResolvedURL ru : answeredRequest) {
                 webout.println("<h4><a href=\"" + ru.getServicehome() + "\">"
@@ -167,11 +162,7 @@ public class Resolver extends HttpServlet {
                         + "<a href=\"" + ru.getUrl() + "\">" + ru.getUrl() + "</a>"
                         + "<br/>");
             }
-            webout.println("</td></tr></table>");
-
-            showFooter(webout);
-
-            webout.println(HTML_END); // end of html-document
+            webout.println("</td></tr></table>" + showFooter() + HTML_END); // end of html-document
         } else {
             // no result
             logger.info("SUBResolver: sorry, no result");
@@ -198,19 +189,16 @@ public class Resolver extends HttpServlet {
      */
     private void showHTML_NoHits(PrintWriter webout)
             throws IOException {
-        webout.println(HTML_START);
-        webout.println("<title>error - document not found</title>");
-        webout.println(HEAD_BODY);
-        showHeader(webout);
-        webout.println("<center><table width=\"600\"><tr><td>"
+        webout.println(HTML_START
+                + "<title>error - document not found</title>"
+                + HEAD_BODY + showHeader() + "<center><table width=\"600\"><tr><td>"
                 + "Unfortunately the URL could not be resolved. None of the"
                 + " underlying local document resolver were able to find a document with the"
                 + " given identifier. Maybe one of the services is down or a document "
                 + "with the number doesn't exist. As your URL should contain a persistent"
                 + " identifier, please check again later."
-                + "</td></tr></table>");
-        showFooter(webout);
-        webout.println(HTML_END); // end of html-document
+                + "</td></tr></table>"
+                + showFooter() + HTML_END); // end of html-document
     }
 
     /**
@@ -238,11 +226,11 @@ public class Resolver extends HttpServlet {
      * @param out
      * @param request
      */
-    private void showHeader(PrintWriter out) {
-        out.println("<center><table width=\"600\"><tr><td>"
+    private String showHeader() {
+        return "<center><table width=\"600\"><tr><td>"
                 + "<center><img width=\"20%\" src=\"" + myPrefs.getLogoImage()
                 + "\"/></center>" + "<br><b>Document Resolver</b></center>"
-                + "</td></tr></table></center>");
+                + "</td></tr></table></center>";
     }
 
     /**
@@ -250,11 +238,11 @@ public class Resolver extends HttpServlet {
      *
      * @param out
      */
-    private void showFooter(PrintWriter out) {
-        out.println("<center><table width=\"600\"><tr><td>"
+    private String showFooter() {
+        return "<center><table width=\"600\"><tr><td>"
                 + "<hr><font size=\"-1\">"
                 + "(C) Nieders&auml;chsische Staats- und Universit&auml;tsbibliothek G&ouml;ttingen, 2005"
-                + "</font></td></tr></table></center>");
+                + "</font></td></tr></table></center>";
     }
 
     private String dumpResolvedUrl(ResolvedURL ru) {
