@@ -154,7 +154,7 @@ public class Resolver extends HttpServlet {
             webout.println(HTML_START + TITLE + HEAD_BODY + showHeader()
                     + "<center><table width=\"600\"><tr><td>"
                     + "The document you requested " + request.getRequestURL() + "?" + parameter
-                    + " is available at:<br>");
+                    + " is available at:<br/>");
 
             for (ResolvedURL ru : answeredRequest) {
                 webout.println("<h4><a href=\"" + ru.getServicehome() + "\">"
@@ -183,12 +183,10 @@ public class Resolver extends HttpServlet {
     /**
      * Shows the HTML page, if no hit was returned from any LPIR.
      *
-     * @param response
-     * @param request
+     * @param webout
      * @throws IOException
      */
-    private void showHTML_NoHits(PrintWriter webout)
-            throws IOException {
+    private void showHTML_NoHits(PrintWriter webout) {
         webout.println(HTML_START
                 + "<title>error - document not found</title>"
                 + HEAD_BODY + showHeader() + "<center><table width=\"600\"><tr><td>"
@@ -211,20 +209,16 @@ public class Resolver extends HttpServlet {
             throws IOException {
         PrintWriter webout = response.getWriter(); // get stream;
         String errorMailAdress = myPrefs.getContact();
-        webout.println(HTML_START);
-        webout.println("<title>error - internal error</title>");
-        webout.println(HEAD_BODY);
-        webout.println("An internal error occured. Please report the URL and the error-message to"
-                + " <a href=\"mailto:" + errorMailAdress + "\"" + errorMailAdress + "</a>");
-        webout.println(HTML_END); // end of html-document
+        webout.println(HTML_START + "<title>error - internal error</title>" + HEAD_BODY
+                + "An internal error occured. Please report the URL and the error-message to"
+                + " <a href=\"mailto:" + errorMailAdress + "\">" + errorMailAdress + "</a>"
+                + HTML_END); // end of html-document
 
     }
 
     /**
-     * Shows the header (with logo) of every HTML-page
+     * Returns the header (with logo) of every HTML-page
      *
-     * @param out
-     * @param request
      */
     private String showHeader() {
         return "<center><table width=\"600\"><tr><td>"
@@ -234,9 +228,8 @@ public class Resolver extends HttpServlet {
     }
 
     /**
-     * Shows the footer of any HTML page
+     * Returns the footer of any HTML page
      *
-     * @param out
      */
     private String showFooter() {
         return "<center><table width=\"600\"><tr><td>"
@@ -245,6 +238,10 @@ public class Resolver extends HttpServlet {
                 + "</font></td></tr></table></center>";
     }
 
+    /**
+     * Returns the contenst of a ResolvedUrl object
+     *
+     */
     private String dumpResolvedUrl(ResolvedURL ru) {
         return "SUBResolver: ru.URL: " + ru.getUrl() + "\n"
                 + "SUBResolver: ru.PURL:" + ru.getPurl() + "\n"
