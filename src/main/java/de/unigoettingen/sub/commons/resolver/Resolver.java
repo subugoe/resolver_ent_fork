@@ -88,7 +88,6 @@ public class Resolver extends HttpServlet {
             LocalResolverConnectorThread rt = new LocalResolverConnectorThread(url + parameter, myPrefs.getMaxThreadRuntime());
             // create a new thread
             rt.start();   // start thread
-
             allThreads.add(rt); // add thread to groups of threads
 
         }
@@ -158,15 +157,15 @@ public class Resolver extends HttpServlet {
 
             showHeader(webout);
 
-            webout.println("<center><table width=\"600\"><tr><td>");
-
-            webout.println("The document you requested " + request.getRequestURL() + "?" + parameter);
+            webout.println("<center><table width=\"600\"><tr><td>"
+                    + "The document you requested " + request.getRequestURL() + "?" + parameter);
             webout.println(" is available at:<br>");
 
             for (ResolvedURL ru : answeredRequest) {
-                webout.println("<h4> <a href=\"" + ru.getServicehome() + "\">" + ru.getService() + "</a></h4>");
-                webout.println("go to document:&nbsp;<a href=\"" + ru.getUrl() + "\">" + ru.getUrl() + "</a>");
-                webout.println("<br>");
+                webout.println("<h4><a href=\"" + ru.getServicehome() + "\">"
+                        + ru.getService() + "</a></h4>" + "go to document:&nbsp;"
+                        + "<a href=\"" + ru.getUrl() + "\">" + ru.getUrl() + "</a>"
+                        + "<br/>");
             }
             webout.println("</td></tr></table>");
 
@@ -203,11 +202,13 @@ public class Resolver extends HttpServlet {
         webout.println("<title>error - document not found</title>");
         webout.println(HEAD_BODY);
         showHeader(webout);
-        webout.println("<center><table width=\"600\"><tr><td>");
-        webout.println("Unfortunately the URL could not be resolved. None of the underlying local document resolver were able to find a document with the"
-                + " given identifier. Maybe one of the services is down or a document with the number doesn't exist. As your URL should contain a persistent"
-                + " identifier, please check again later.");
-        webout.println("</td></tr></table>");
+        webout.println("<center><table width=\"600\"><tr><td>"
+                + "Unfortunately the URL could not be resolved. None of the"
+                + " underlying local document resolver were able to find a document with the"
+                + " given identifier. Maybe one of the services is down or a document "
+                + "with the number doesn't exist. As your URL should contain a persistent"
+                + " identifier, please check again later."
+                + "</td></tr></table>");
         showFooter(webout);
         webout.println(HTML_END); // end of html-document
     }
@@ -238,11 +239,10 @@ public class Resolver extends HttpServlet {
      * @param request
      */
     private void showHeader(PrintWriter out) {
-        out.println("<center><table width=\"600\"><tr><td>");
-        out.println("<center><img width=\"20%\" src=\"" + myPrefs.getLogoImage() + "\"/></center>");
-        out.println("<br><b>Document Resolver</b></center>");
-
-        out.println("</td></tr></table></center>");
+        out.println("<center><table width=\"600\"><tr><td>"
+                + "<center><img width=\"20%\" src=\"" + myPrefs.getLogoImage()
+                + "\"/></center>" + "<br><b>Document Resolver</b></center>"
+                + "</td></tr></table></center>");
     }
 
     /**
@@ -251,10 +251,10 @@ public class Resolver extends HttpServlet {
      * @param out
      */
     private void showFooter(PrintWriter out) {
-        out.println("<center><table width=\"600\"><tr><td>");
-        out.println("<hr><font size=\"-1\">");
-        out.println("(C) Nieders&auml;chsische Staats- und Universit&auml;tsbibliothek G&ouml;ttingen, 2005");
-        out.println("</font></td></tr></table></center>");
+        out.println("<center><table width=\"600\"><tr><td>"
+                + "<hr><font size=\"-1\">"
+                + "(C) Nieders&auml;chsische Staats- und Universit&auml;tsbibliothek G&ouml;ttingen, 2005"
+                + "</font></td></tr></table></center>");
     }
 
     private String dumpResolvedUrl(ResolvedURL ru) {
