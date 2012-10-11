@@ -15,8 +15,8 @@ package de.unigoettingen.sub.commons.resolver;
  */
 public class LocalResolver {
 
-    String url;
-    String name;
+    private String url;
+    private String name;
 
     public LocalResolver() {
     }

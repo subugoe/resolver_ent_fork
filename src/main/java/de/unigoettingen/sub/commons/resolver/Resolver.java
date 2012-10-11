@@ -134,7 +134,7 @@ public class Resolver extends HttpServlet {
             response.setContentType("text/html");
             for (ResolvedURL ru : answeredRequest) {
                 response.setStatus(307); // temporary redirect; avoid caching
-                response.setHeader("Location", ru.url);
+                response.setHeader("Location", ru.getUrl());
             }
             return;
         }

@@ -12,12 +12,12 @@ package de.unigoettingen.sub.commons.resolver;
  */
 public class ResolvedURL {
 
-    String purl = null;
-    String url = null;
-    String service = null;
-    String servicehome = null;
-    String access = null;
-    String version = null;
+    private String purl = null;
+    private String url = null;
+    private String service = null;
+    private String servicehome = null;
+    private String access = null;
+    private String version = null;
 
     public ResolvedURL() {
     }
