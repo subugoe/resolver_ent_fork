@@ -40,6 +40,12 @@ public class Resolver extends HttpServlet {
     private static final long serialVersionUID = 0022001;
     private Preferences myPrefs = null;
     public static final String VERSION = "version 0.3";
+    
+    
+    private static final String CONTENT_TYPE = "text/html";
+    private static final String HTML_START = "<html><head>";
+    private static final String TITLE = "<title>SUB resolver</title>";
+    private static final String HTML_END = "</head><body>";
 
     /**
      * Handles the servlet get-request.
@@ -125,14 +131,14 @@ public class Resolver extends HttpServlet {
 
         // No hit is available
         if (answeredRequest.size() == 0) {
-            response.setContentType("text/html");
+            response.setContentType(CONTENT_TYPE);
             showHTML_NoHits(response);
             return;
         }
 
         // just one hit; do a redirect
         if (answeredRequest.size() == 1) {
-            response.setContentType("text/html");
+            response.setContentType(CONTENT_TYPE);
             for (ResolvedURL ru : answeredRequest) {
                 response.setStatus(307); // temporary redirect; avoid caching
                 response.setHeader("Location", ru.getUrl());
@@ -158,12 +164,12 @@ public class Resolver extends HttpServlet {
             // output HTML
 
             // set http header
-            response.setContentType("text/html");
+            response.setContentType(CONTENT_TYPE);
             PrintWriter webout = response.getWriter(); // get stream;
 
-            webout.println("<html><head>");
-            webout.println("<title>SUB resolver</title>");
-            webout.println("</head><body>");
+            webout.println(HTML_START);
+            webout.println(TITLE);
+            webout.println(HTML_END);
 
             showHeader(webout);
 
@@ -182,7 +188,7 @@ public class Resolver extends HttpServlet {
 
             showFooter(webout);
 
-            webout.println("</body></html>"); // end of html-document
+            webout.println(HTML_END); // end of html-document
         } else {
             // no result
             logger.info("SUBResolver: sorry, no result");
@@ -216,7 +222,7 @@ public class Resolver extends HttpServlet {
             logger.error("IO Exception while getting response stream", ioe);
             return;
         }
-        webout.println("<html><head>");
+        webout.println(HTML_START);
         webout.println("<title>error - document not found</title>");
         webout.println("</head><body>");
         showHeader(webout);
@@ -226,7 +232,7 @@ public class Resolver extends HttpServlet {
                 + " identifier, please check again later.");
         webout.println("</td></tr></table>");
         showFooter(webout);
-        webout.println("</body></html>"); // end of html-document
+        webout.println(HTML_END); // end of html-document
     }
 
     /**
@@ -245,12 +251,12 @@ public class Resolver extends HttpServlet {
             logger.error("IO Exception while getting response stream", ioe);
             return;
         }
-        webout.println("<html><head>");
+        webout.println(HTML_START);
         webout.println("<title>error - internal error</title>");
         webout.println("</head><body>");
         webout.println("An internal error occured. Please report the URL and the error-message to"
                 + " <a href=\"mailto:" + errorMailAdress + "\"" + errorMailAdress + "</a>");
-        webout.println("</body></html>"); // end of html-document
+        webout.println(HTML_END); // end of html-document
 
     }
 
