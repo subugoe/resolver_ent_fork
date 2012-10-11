@@ -214,26 +214,26 @@ public class LocalResolverConnectorThread extends Thread {
             
             // this is vor version 0.1
             if (singlenode.getNodeName().equalsIgnoreCase("requestedPURL")) {
-                purl = getValueOfElement(singlenode);
+                purl = Resolver.getValueOfElement(singlenode);
             }
             // this is for version 0.2
             if (singlenode.getNodeName().equalsIgnoreCase("requestedLPI")) {
-                purl = getValueOfElement(singlenode);
+                purl = Resolver.getValueOfElement(singlenode);
             }
             if (singlenode.getNodeName().equalsIgnoreCase("service")) {
-                service = getValueOfElement(singlenode);
+                service = Resolver.getValueOfElement(singlenode);
             }
             if (singlenode.getNodeName().equalsIgnoreCase("servicehome")) {
-                servicehome = getValueOfElement(singlenode);
+                servicehome = Resolver.getValueOfElement(singlenode);
             }
             if (singlenode.getNodeName().equalsIgnoreCase("url")) {
-                resolverurl = getValueOfElement(singlenode);
+                resolverurl = Resolver.getValueOfElement(singlenode);
             }
             if (singlenode.getNodeName().equalsIgnoreCase("version")) {
-                version = getValueOfElement(singlenode);
+                version = Resolver.getValueOfElement(singlenode);
             }
             if (singlenode.getNodeName().equalsIgnoreCase("access")) {
-                access = getValueOfElement(singlenode);
+                access = Resolver.getValueOfElement(singlenode);
             }
         }
 
@@ -260,18 +260,6 @@ public class LocalResolverConnectorThread extends Thread {
             logger.warn("SUBResolver: response from " + localresolverurl + " is empty or invalid");
             return null;
         }
-    }
-
-    private String getValueOfElement(Node inNode) {
-        NodeList childnodes = inNode.getChildNodes();
-
-        for (int i = 0; i < childnodes.getLength(); i++) {
-            Node singlenode = childnodes.item(i);
-            if (singlenode.getNodeType() == Node.TEXT_NODE) {
-                return singlenode.getNodeValue();
-            }
-        }
-        return null;
     }
 
     /**

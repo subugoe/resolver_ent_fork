@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
 public class Preferences {
 
     static Logger logger = Logger.getLogger(Resolver.class.getName());
-    public static String CONFIGFILE = "resolver_config.xml";
+    public static final String CONFIGFILE = "resolver_config.xml";
     private String logoImage = "./images/SUBLogo.gif";
     private String contact = "";
     private List<LocalResolver> resolvers = null;
@@ -98,12 +98,11 @@ public class Preferences {
                 if (singlenode.getNodeName().equals("localresolver")) {		// read list of all types, which are serials 
                     resolvers = readAllLocalResolvers(singlenode);
                 } else if (singlenode.getNodeName().equals("maxThreadRuntime")) {
-                    String debug_str = getValueOfElement(singlenode);
-                    maxThreadRuntime = Integer.parseInt(debug_str);
+                    maxThreadRuntime = Integer.parseInt(Resolver.getValueOfElement(singlenode));
                 } else if (singlenode.getNodeName().equals("contact")) {
-                    contact = getValueOfElement(singlenode);
+                    contact = Resolver.getValueOfElement(singlenode);
                 } else if (singlenode.getNodeName().equals("logoImage")) {
-                    logoImage = getValueOfElement(singlenode);
+                    logoImage = Resolver.getValueOfElement(singlenode);
                 }
 
             } // end of for loop
@@ -118,8 +117,8 @@ public class Preferences {
             return false;
         }
 
-        // check fields, which must have a value (e.h. database fields)
-        if ((resolvers == null) || (resolvers.size() == 0)) {
+        // check fields, which must have a value)
+        if ((resolvers == null) || (resolvers.isEmpty())) {
             logger.error("Preferences: - error - No resolvers found");
             return false;
         }
@@ -153,8 +152,8 @@ public class Preferences {
     /**
      * @param maxThreadRuntime the maxThreadRuntime to set
      */
-    protected void setMaxThreadRuntime(int max_threadruntime) {
-        this.maxThreadRuntime = max_threadruntime;
+    protected void setMaxThreadRuntime(int maxThreadRuntime) {
+        this.maxThreadRuntime = maxThreadRuntime;
     }
 
     /**
@@ -212,11 +211,15 @@ public class Preferences {
         String url = null;
         for (int i = 0; i < allnodes.getLength(); i++) {
             Node singlenode = allnodes.item(i);
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equals("name"))) {
-                internalName = getValueOfElement(singlenode);
+            if (singlenode.getNodeType() != Node.ELEMENT_NODE) {
+                //Not a Element Node
+                continue; 
             }
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equals("url"))) {
-                url = getValueOfElement(singlenode);
+            if (singlenode.getNodeName().equals("name")) {
+                internalName = Resolver.getValueOfElement(singlenode);
+            }
+            if (singlenode.getNodeName().equals("url")) {
+                url = Resolver.getValueOfElement(singlenode);
             }
         }
         if ((internalName == null) || (url == null)) {
@@ -227,25 +230,4 @@ public class Preferences {
         return newresolver;
     }
 
-    /**
-     * Searches for the value of an XML-element. The value of an element is
-     * stored in a text node, which is the child of an element node. So we are
-     * looking for any direct childnodes and check, if these nodes a textnodes.
-     *
-     * @param inNode
-     * @return String or null, if node has no text-node with contents as a child
-     * node.
-     *
-     */
-    private String getValueOfElement(Node inNode) {
-        NodeList childnodes = inNode.getChildNodes();
-
-        for (int i = 0; i < childnodes.getLength(); i++) {
-            Node singlenode = childnodes.item(i);
-            if (singlenode.getNodeType() == Node.TEXT_NODE) {
-                return singlenode.getNodeValue();
-            }
-        }
-        return null;
-    }
 }

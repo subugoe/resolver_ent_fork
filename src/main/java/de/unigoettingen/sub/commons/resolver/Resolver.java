@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Servlet receives a URL with an identifier and asks different local identifier
@@ -38,7 +40,6 @@ public class Resolver extends HttpServlet {
     private static final long serialVersionUID = 0022001;
     private Preferences myPrefs = null;
     public static final String VERSION = "version 0.3";
-    private String DIRSEP = null;
 
     /**
      * Handles the servlet get-request.
@@ -280,6 +281,28 @@ public class Resolver extends HttpServlet {
     }
 
     /**
+     * Searches for the value of an XML-element. The value of an element is
+     * stored in a text node, which is the child of an element node. So we are
+     * looking for any direct childnodes and check, if these nodes a textnodes.
+     *
+     * @param inNode
+     * @return String or null, if node has no text-node with contents as a child
+     * node.
+     *
+     */
+    protected static String getValueOfElement(Node inNode) {
+        NodeList childnodes = inNode.getChildNodes();
+
+        for (int i = 0; i < childnodes.getLength(); i++) {
+            Node singlenode = childnodes.item(i);
+            if (singlenode.getNodeType() == Node.TEXT_NODE) {
+                return singlenode.getNodeValue();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Method initializes the servlet: loads preferences (from
      * resolver_config.xml within the application's webapp-folder).
      *
@@ -287,7 +310,7 @@ public class Resolver extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        DIRSEP = System.getProperty("file.separator");
+        String dirsep = System.getProperty("file.separator");
 
         String configFile;
         if (config.getInitParameter("config") == null || "".equals(config.getInitParameter("config"))) {
@@ -297,7 +320,7 @@ public class Resolver extends HttpServlet {
         }
 
         //String prefix = getServletContext().getRealPath(DIRSEP + "WEB-INF");
-        String configPath = getServletContext().getRealPath(".") + DIRSEP + "WEB-INF"+ DIRSEP + configFile;
+        String configPath = getServletContext().getRealPath(".") + dirsep + "WEB-INF" + dirsep + configFile;
         logger.info("Config Path is " + configPath);
 
         logger.info("Starting  == GLOBAL SUB RESOLVER == " + VERSION);
