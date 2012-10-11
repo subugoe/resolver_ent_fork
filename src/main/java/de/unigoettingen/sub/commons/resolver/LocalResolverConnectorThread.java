@@ -74,7 +74,7 @@ public class LocalResolverConnectorThread extends Thread {
 
             // error checking
             if (statusCode != HttpStatus.SC_OK) {
-                logger.warn("SUBResolver: Method failed: " + method.getStatusLine() +  " for URL:" + url); 
+                logger.warn("SUBResolver: Method failed: " + method.getStatusLine() + " for URL:" + url);
             }
 
             InputStream responseStream = method.getResponseBodyAsStream();
@@ -131,9 +131,9 @@ public class LocalResolverConnectorThread extends Thread {
                 Node singlenode = allchildnodes.item(x);
 
                 /*
-                if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equals("header"))) {
-                }
-                */
+                 if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equals("header"))) {
+                 }
+                 */
 
                 if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && ((singlenode.getNodeName().equalsIgnoreCase("resolvedPURLs")) || (singlenode.getNodeName().equalsIgnoreCase("resolvedLPIs")))) {
                     ResolvedURL ru = readPURL(singlenode);
@@ -230,15 +230,9 @@ public class LocalResolverConnectorThread extends Thread {
         if ((purl != null) && (resolverurl != null) && (service != null)) {
             // valid answer, all required fields are available
             ResolvedURL ru = new ResolvedURL();
-            if (purl != null) {
-                ru.setPurl(purl);
-            }
-            if (resolverurl != null) {
-                ru.setUrl(resolverurl);
-            }
-            if (service != null) {
-                ru.setService(service);
-            }
+            ru.setPurl(purl);
+            ru.setUrl(resolverurl);
+            ru.setService(service);
             if (servicehome != null) {
                 ru.setServicehome(servicehome);
             }
@@ -269,7 +263,7 @@ public class LocalResolverConnectorThread extends Thread {
         }
         return null;
     }
- 
+
     /**
      * url
      *

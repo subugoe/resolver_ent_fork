@@ -123,14 +123,14 @@ public class Resolver extends HttpServlet {
         }
 
         // No hit is available
-        if ((answeredRequest == null) || (answeredRequest.size() == 0)) {
+        if (answeredRequest.size() == 0) {
             response.setContentType("text/html");
             showHTML_NoHits(response, request);
             return;
         }
 
         // just one hit; do a redirect
-        if ((answeredRequest != null) && (answeredRequest.size() == 1)) {
+        if (answeredRequest.size() == 1) {
             response.setContentType("text/html");
             for (ResolvedURL ru : answeredRequest) {
                 response.setStatus(307); // temporary redirect; avoid caching
@@ -164,7 +164,7 @@ public class Resolver extends HttpServlet {
             webout.println("<title>SUB resolver</title>");
             webout.println("</head><body>");
 
-            showHeader(webout, request);
+            showHeader(webout);
 
             webout.println("<center><table width=\"600\"><tr><td>");
 
@@ -218,7 +218,7 @@ public class Resolver extends HttpServlet {
         webout.println("<html><head>");
         webout.println("<title>error - document not found</title>");
         webout.println("</head><body>");
-        showHeader(webout, request);
+        showHeader(webout);
         webout.println("<center><table width=\"600\"><tr><td>");
         webout.println("Unfortunately the URL could not be resolved. None of the underlying local document resolver were able to find a document with the"
                 + " given identifier. Maybe one of the services is down or a document with the number doesn't exist. As your URL should contain a persistent"
@@ -259,7 +259,7 @@ public class Resolver extends HttpServlet {
      * @param out
      * @param request
      */
-    private void showHeader(PrintWriter out, HttpServletRequest request) {
+    private void showHeader(PrintWriter out) {
         out.println("<center><table width=\"600\"><tr><td>");
         out.println("<center><img width=\"20%\" src=\"" + myPrefs.getLogoImage() + "\"/></center>");
         out.println("<br><b>Document Resolver</b></center>");
