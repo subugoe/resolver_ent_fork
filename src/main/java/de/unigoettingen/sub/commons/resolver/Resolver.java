@@ -79,7 +79,7 @@ public class Resolver extends HttpServlet {
         for (LocalResolver lr : myPrefs.getResolvers()) {
             String url = lr.getURL();
             logger.info("SUBResolver: url:" + url + parameter);
-            LocalResolverConnectorThread rt = new LocalResolverConnectorThread(myPrefs, url + parameter, myPrefs.getMax_threadruntime());
+            LocalResolverConnectorThread rt = new LocalResolverConnectorThread(url + parameter, myPrefs.getMax_threadruntime());
             // create a new thread
             rt.start();   // start thread
 

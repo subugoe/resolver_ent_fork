@@ -51,9 +51,8 @@ public class Preferences {
     public static String CONFIGFILE = "resolver_config.xml";
     private String logoImage = "./images/SUBLogo.gif";
     private String contact = "";
-    private LinkedList<LocalResolver> resolvers = null;
+    private List<LocalResolver> resolvers = null;
     private int max_threadruntime = 30000;
-    private String DIRSEP;
 
     /**
      * The constructor need the filename; the preferences are read from this
@@ -62,8 +61,6 @@ public class Preferences {
      * @param filename
      */
     public Preferences(String filename) throws FileNotFoundException {
-        DIRSEP = System.getProperty("file.separator");
-
         if (!read(filename)) {
             logger.error("ERROR: Can't read Preference file in " + filename);
         }
@@ -131,8 +128,8 @@ public class Preferences {
         return true;
     }
 
-    private LinkedList<LocalResolver> readAllLocalResolvers(Node inNode) {
-        LinkedList<LocalResolver> localResolvers = new LinkedList<LocalResolver>();
+    private List<LocalResolver> readAllLocalResolvers(Node inNode) {
+        List<LocalResolver> localResolvers = new LinkedList<LocalResolver>();
         NodeList allnodes = inNode.getChildNodes();
         for (int i = 0; i < allnodes.getLength(); i++) {
             Node singlenode = allnodes.item(i);
@@ -249,8 +246,7 @@ public class Preferences {
         for (int i = 0; i < childnodes.getLength(); i++) {
             Node singlenode = childnodes.item(i);
             if (singlenode.getNodeType() == Node.TEXT_NODE) {
-                String value = singlenode.getNodeValue();
-                return value;
+                return singlenode.getNodeValue();
             }
         }
         return null;

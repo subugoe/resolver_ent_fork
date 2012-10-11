@@ -7,6 +7,7 @@ package de.unigoettingen.sub.commons.resolver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,14 +37,12 @@ import org.xml.sax.SAXException;
 public class LocalResolverConnectorThread extends Thread {
 
     static Logger logger = Logger.getLogger(Resolver.class.getName());
-    private Preferences myPrefs;
     private String url;
     private int timeout;
-    private LinkedList<ResolvedURL> allURLs;
+    private List<ResolvedURL> allURLs;
     private String localresolverurl = null; // URL or the local resolver to connect for resolution
 
-    public LocalResolverConnectorThread(Preferences inPrefs, String inUrl, int inTimeout) {
-        myPrefs = inPrefs;
+    public LocalResolverConnectorThread(String inUrl, int inTimeout) {
         url = inUrl;
         timeout = inTimeout;
         localresolverurl = inUrl;
@@ -98,7 +97,7 @@ public class LocalResolverConnectorThread extends Thread {
      *
      * @return a LinkedList containing <pre>ResolvedURL</pre> objects.
      */
-    public LinkedList<ResolvedURL> getResponses() {
+    public List<ResolvedURL> getResponses() {
         return allURLs;
     }
 
@@ -110,9 +109,9 @@ public class LocalResolverConnectorThread extends Thread {
      * @param responseStream
      * @return LinkedList containing <pre>ResolvedURL</pre> objects
      */
-    private LinkedList<ResolvedURL> getResponse(InputStream responseStream) {
+    private List<ResolvedURL> getResponse(InputStream responseStream) {
 
-        LinkedList<ResolvedURL> allURL = new LinkedList();
+        List<ResolvedURL> allURL = new LinkedList();
 
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -131,8 +130,10 @@ public class LocalResolverConnectorThread extends Thread {
             for (int x = 0; x < allchildnodes.getLength(); x++) {
                 Node singlenode = allchildnodes.item(x);
 
+                /*
                 if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equals("header"))) {
                 }
+                */
 
                 if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && ((singlenode.getNodeName().equalsIgnoreCase("resolvedPURLs")) || (singlenode.getNodeName().equalsIgnoreCase("resolvedLPIs")))) {
                     ResolvedURL ru = readPURL(singlenode);
@@ -263,8 +264,7 @@ public class LocalResolverConnectorThread extends Thread {
         for (int i = 0; i < childnodes.getLength(); i++) {
             Node singlenode = childnodes.item(i);
             if (singlenode.getNodeType() == Node.TEXT_NODE) {
-                String value = singlenode.getNodeValue();
-                return value;
+                return singlenode.getNodeValue();
             }
         }
         return null;
