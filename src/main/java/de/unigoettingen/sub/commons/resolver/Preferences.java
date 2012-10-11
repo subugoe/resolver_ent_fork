@@ -95,13 +95,14 @@ public class Preferences {
                 if (singlenode.getNodeType() != Node.ELEMENT_NODE) {
                     continue; // next iteration in loop
                 }
-                if (singlenode.getNodeName().equals("localresolver")) {		// read list of all types, which are serials 
+                String nodeName = singlenode.getNodeName().toLowerCase();
+                if (nodeName.equals("localresolver")) {		// read list of all types, which are serials 
                     resolvers = readAllLocalResolvers(singlenode);
-                } else if (singlenode.getNodeName().equals("maxThreadRuntime")) {
+                } else if (nodeName.equals("maxthreadruntime")) {
                     maxThreadRuntime = Integer.parseInt(Resolver.getValueOfElement(singlenode));
-                } else if (singlenode.getNodeName().equals("contact")) {
+                } else if (nodeName.equals("contact")) {
                     contact = Resolver.getValueOfElement(singlenode);
-                } else if (singlenode.getNodeName().equals("logoImage")) {
+                } else if (nodeName.equals("logoimage")) {
                     logoImage = Resolver.getValueOfElement(singlenode);
                 }
 
@@ -212,13 +213,13 @@ public class Preferences {
         for (int i = 0; i < allnodes.getLength(); i++) {
             Node singlenode = allnodes.item(i);
             if (singlenode.getNodeType() != Node.ELEMENT_NODE) {
-                //Not a Element Node
+                //Not a Element Node, next please!
                 continue; 
             }
-            if (singlenode.getNodeName().equals("name")) {
+            String nodeName = singlenode.getNodeName().toLowerCase();
+            if (nodeName.equals("name")) {
                 internalName = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equals("url")) {
+            } else if (nodeName.equals("url")) {
                 url = Resolver.getValueOfElement(singlenode);
             }
         }

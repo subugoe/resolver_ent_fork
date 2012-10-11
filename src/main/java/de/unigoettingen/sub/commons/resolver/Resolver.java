@@ -40,11 +40,10 @@ public class Resolver extends HttpServlet {
     private static final long serialVersionUID = 0022001;
     private Preferences myPrefs = null;
     public static final String VERSION = "version 0.3";
-    
-    
     private static final String CONTENT_TYPE = "text/html";
     private static final String HTML_START = "<html><head>";
     private static final String TITLE = "<title>SUB resolver</title>";
+    private static final String HEAD_BODY = "</head><body>";
     private static final String HTML_END = "</head><body>";
 
     /**
@@ -116,12 +115,7 @@ public class Resolver extends HttpServlet {
                 // thread is not finsihed, so we won't have any answer
                 if (t.getResponses() != null && (t.getResponses().size() > 0)) {
                     for (ResolvedURL ru : t.getResponses()) {
-                        logger.debug("XML Response:\n"
-                                + "SUBResolver1: ru.URL: " + ru.getUrl() + "\n"
-                                + "SUBResolver1: ru.PURL:" + ru.getPurl() + "\n"
-                                + "SUBResolver1: ru.Service:" + ru.getService() + "\n"
-                                + "SUBResolver1: ru.Servicehome:" + ru.getServicehome() + "\n"
-                                + "SUBResolver1: ru.Version:" + ru.getVersion());
+                        logger.debug("XML Response:\n" + dumpResolvedUrl(ru));
                         answeredRequest.add(ru);
                     }
                 } // endif
@@ -129,54 +123,44 @@ public class Resolver extends HttpServlet {
 
         }
 
-        // No hit is available
-        if (answeredRequest.size() == 0) {
-            response.setContentType(CONTENT_TYPE);
-            showHTML_NoHits(response);
-            return;
-        }
-
         // just one hit; do a redirect
         if (answeredRequest.size() == 1) {
-            response.setContentType(CONTENT_TYPE);
-            for (ResolvedURL ru : answeredRequest) {
-                response.setStatus(307); // temporary redirect; avoid caching
-                response.setHeader("Location", ru.getUrl());
-            }
+            response.setStatus(307); // temporary redirect; avoid caching
+            response.setHeader("Location", answeredRequest.get(0).getUrl());
             return;
         }
 
+
+        // set HTTP header - since HTML is comming after this point
+        response.setContentType(CONTENT_TYPE);
         // output the result
-        // as HTML or do a simple forward
         // if only one result is available
 
+        PrintWriter webout = response.getWriter(); // get stream;
 
-        // just output debug information
+        // No hit is available
+        if (answeredRequest.size() == 0) {
+            showHTML_NoHits(webout);
+            return;
+        }
+
+
         if (answeredRequest.size() > 0) {
+            // just output debug information
             for (ResolvedURL ru : answeredRequest) {
-                logger.debug("SUBResolver: ru.URL: " + ru.getUrl() + "\n"
-                        + "SUBResolver: ru.PURL:" + ru.getPurl() + "\n"
-                        + "SUBResolver: ru.Service:" + ru.getService() + "\n"
-                        + "SUBResolver: ru.Servicehome:" + ru.getServicehome() + "\n"
-                        + "SUBResolver: ru.Version:" + ru.getVersion());
+                logger.debug("checking answer" + dumpResolvedUrl(ru));
             }
 
             // output HTML
-
-            // set http header
-            response.setContentType(CONTENT_TYPE);
-            PrintWriter webout = response.getWriter(); // get stream;
-
             webout.println(HTML_START);
             webout.println(TITLE);
-            webout.println(HTML_END);
+            webout.println(HEAD_BODY);
 
             showHeader(webout);
 
             webout.println("<center><table width=\"600\"><tr><td>");
 
-            webout.println("The document you requested ");
-            webout.println("" + request.getRequestURL() + "?" + parameter);
+            webout.println("The document you requested " + request.getRequestURL() + "?" + parameter);
             webout.println(" is available at:<br>");
 
             for (ResolvedURL ru : answeredRequest) {
@@ -213,12 +197,11 @@ public class Resolver extends HttpServlet {
      * @param request
      * @throws IOException
      */
-    private void showHTML_NoHits(HttpServletResponse response)
+    private void showHTML_NoHits(PrintWriter webout)
             throws IOException {
-        PrintWriter webout = response.getWriter(); // get stream;
         webout.println(HTML_START);
         webout.println("<title>error - document not found</title>");
-        webout.println("</head><body>");
+        webout.println(HEAD_BODY);
         showHeader(webout);
         webout.println("<center><table width=\"600\"><tr><td>");
         webout.println("Unfortunately the URL could not be resolved. None of the underlying local document resolver were able to find a document with the"
@@ -241,7 +224,7 @@ public class Resolver extends HttpServlet {
         String errorMailAdress = myPrefs.getContact();
         webout.println(HTML_START);
         webout.println("<title>error - internal error</title>");
-        webout.println("</head><body>");
+        webout.println(HEAD_BODY);
         webout.println("An internal error occured. Please report the URL and the error-message to"
                 + " <a href=\"mailto:" + errorMailAdress + "\"" + errorMailAdress + "</a>");
         webout.println(HTML_END); // end of html-document
@@ -272,6 +255,14 @@ public class Resolver extends HttpServlet {
         out.println("<hr><font size=\"-1\">");
         out.println("(C) Nieders&auml;chsische Staats- und Universit&auml;tsbibliothek G&ouml;ttingen, 2005");
         out.println("</font></td></tr></table></center>");
+    }
+
+    private String dumpResolvedUrl(ResolvedURL ru) {
+        return "SUBResolver: ru.URL: " + ru.getUrl() + "\n"
+                + "SUBResolver: ru.PURL:" + ru.getPurl() + "\n"
+                + "SUBResolver: ru.Service:" + ru.getService() + "\n"
+                + "SUBResolver: ru.Servicehome:" + ru.getServicehome() + "\n"
+                + "SUBResolver: ru.Version:" + ru.getVersion();
     }
 
     /**

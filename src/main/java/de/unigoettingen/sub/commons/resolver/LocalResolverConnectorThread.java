@@ -183,14 +183,14 @@ public class LocalResolverConnectorThread extends Thread {
                 //Not a Element Node
                 continue; 
             }
-            
+            String nodeName = singlenode.getNodeName().toUpperCase();
             // this is for version 0.1
-            if (singlenode.getNodeName().equalsIgnoreCase("PURL")) {
+            if (nodeName.equals("PURL")) {
                 purlnode = singlenode;
                 break; // get out of loop
-            }
+            } else
             // this is for version 0.2
-            if (singlenode.getNodeName().equalsIgnoreCase("LPI")) {
+            if (nodeName.equals("LPI")) {
                 purlnode = singlenode;
                 break; // get out of loop
             }
@@ -212,27 +212,23 @@ public class LocalResolverConnectorThread extends Thread {
                 continue; 
             }
             
+            String nodeName = singlenode.getNodeName();
             // this is vor version 0.1
-            if (singlenode.getNodeName().equalsIgnoreCase("requestedPURL")) {
+            if (nodeName.equalsIgnoreCase("requestedPURL")) {
                 purl = Resolver.getValueOfElement(singlenode);
-            }
+            } else
             // this is for version 0.2
-            if (singlenode.getNodeName().equalsIgnoreCase("requestedLPI")) {
+            if (nodeName.equalsIgnoreCase("requestedLPI")) {
                 purl = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("service")) {
+            } else if (nodeName.equalsIgnoreCase("service")) {
                 service = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("servicehome")) {
+            } else if (nodeName.equalsIgnoreCase("servicehome")) {
                 servicehome = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("url")) {
+            } else if (nodeName.equalsIgnoreCase("url")) {
                 resolverurl = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("version")) {
+            } else if (nodeName.equalsIgnoreCase("version")) {
                 version = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("access")) {
+            } else if (nodeName.equalsIgnoreCase("access")) {
                 access = Resolver.getValueOfElement(singlenode);
             }
         }
