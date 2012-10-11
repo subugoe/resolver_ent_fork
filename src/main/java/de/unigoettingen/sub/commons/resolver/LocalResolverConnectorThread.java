@@ -179,13 +179,18 @@ public class LocalResolverConnectorThread extends Thread {
         NodeList allchildnodes = inNode.getChildNodes();
         for (int x = 0; x < allchildnodes.getLength(); x++) {
             Node singlenode = allchildnodes.item(x);
+            if (singlenode.getNodeType() != Node.ELEMENT_NODE) {
+                //Not a Element Node
+                continue; 
+            }
+            
             // this is for version 0.1
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equalsIgnoreCase("PURL"))) {
+            if (singlenode.getNodeName().equalsIgnoreCase("PURL")) {
                 purlnode = singlenode;
                 break; // get out of loop
             }
             // this is for version 0.2
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equalsIgnoreCase("LPI"))) {
+            if (singlenode.getNodeName().equalsIgnoreCase("LPI")) {
                 purlnode = singlenode;
                 break; // get out of loop
             }
@@ -202,27 +207,32 @@ public class LocalResolverConnectorThread extends Thread {
         // iterate over all children
         for (int x = 0; x < allchildnodes.getLength(); x++) {
             Node singlenode = allchildnodes.item(x);
+            if (singlenode.getNodeType() != Node.ELEMENT_NODE) {
+                //Not a Element Node
+                continue; 
+            }
+            
             // this is vor version 0.1
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equalsIgnoreCase("requestedPURL"))) {
+            if (singlenode.getNodeName().equalsIgnoreCase("requestedPURL")) {
                 purl = getValueOfElement(singlenode);
             }
             // this is for version 0.2
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equalsIgnoreCase("requestedLPI"))) {
+            if (singlenode.getNodeName().equalsIgnoreCase("requestedLPI")) {
                 purl = getValueOfElement(singlenode);
             }
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equalsIgnoreCase("service"))) {
+            if (singlenode.getNodeName().equalsIgnoreCase("service")) {
                 service = getValueOfElement(singlenode);
             }
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equalsIgnoreCase("servicehome"))) {
+            if (singlenode.getNodeName().equalsIgnoreCase("servicehome")) {
                 servicehome = getValueOfElement(singlenode);
             }
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equalsIgnoreCase("url"))) {
+            if (singlenode.getNodeName().equalsIgnoreCase("url")) {
                 resolverurl = getValueOfElement(singlenode);
             }
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equalsIgnoreCase("version"))) {
+            if (singlenode.getNodeName().equalsIgnoreCase("version")) {
                 version = getValueOfElement(singlenode);
             }
-            if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equalsIgnoreCase("access"))) {
+            if (singlenode.getNodeName().equalsIgnoreCase("access")) {
                 access = getValueOfElement(singlenode);
             }
         }

@@ -36,9 +36,9 @@ public class Resolver extends HttpServlet {
 
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     private static final long serialVersionUID = 0022001;
-    Preferences myPrefs = null;
-    String version = "version 0.3";
-    String DIRSEP = null;
+    private Preferences myPrefs = null;
+    public static final String VERSION = "version 0.3";
+    private String DIRSEP = null;
 
     /**
      * Handles the servlet get-request.
@@ -79,7 +79,7 @@ public class Resolver extends HttpServlet {
         for (LocalResolver lr : myPrefs.getResolvers()) {
             String url = lr.getURL();
             logger.info("SUBResolver: url:" + url + parameter);
-            LocalResolverConnectorThread rt = new LocalResolverConnectorThread(url + parameter, myPrefs.getMax_threadruntime());
+            LocalResolverConnectorThread rt = new LocalResolverConnectorThread(url + parameter, myPrefs.getMaxThreadRuntime());
             // create a new thread
             rt.start();   // start thread
 
@@ -90,7 +90,7 @@ public class Resolver extends HttpServlet {
         // checking, if threads are still running
         for (LocalResolverConnectorThread t : allThreads) {
             try {
-                t.join(myPrefs.getMax_threadruntime());   // just wait max. 20 seconds until thread must be finished
+                t.join(myPrefs.getMaxThreadRuntime());   // just wait max. 20 seconds until thread must be finished
             } catch (InterruptedException e) {
                 // thread was interrupted
                 response.setContentType("text/html");
@@ -125,7 +125,7 @@ public class Resolver extends HttpServlet {
         // No hit is available
         if (answeredRequest.size() == 0) {
             response.setContentType("text/html");
-            showHTML_NoHits(response, request);
+            showHTML_NoHits(response);
             return;
         }
 
@@ -206,7 +206,7 @@ public class Resolver extends HttpServlet {
      * @param request
      * @throws IOException
      */
-    private void showHTML_NoHits(HttpServletResponse response, HttpServletRequest request)
+    private void showHTML_NoHits(HttpServletResponse response)
             throws IOException {
         PrintWriter webout;
         try {
@@ -279,20 +279,6 @@ public class Resolver extends HttpServlet {
         out.println("</font></td></tr></table></center>");
     }
 
-
-    private PrintWriter initHTMLWrite(HttpServletResponse response, HttpServletRequest request) throws ServletException {
-        // set http header
-        response.setContentType("text/html");
-        PrintWriter webout;
-        try {
-            webout = response.getWriter(); // get stream;
-        } catch (IOException ioe) {
-            logger.error("IO Exception while getting response stream ", ioe);
-            throw new ServletException("IO Exception while getting response stream ", ioe);
-        }
-        return webout;
-    }
-
     /**
      * Method initializes the servlet: loads preferences (from
      * resolver_config.xml within the application's webapp-folder).
@@ -314,7 +300,7 @@ public class Resolver extends HttpServlet {
         String configPath = getServletContext().getRealPath(".") + DIRSEP + "WEB-INF"+ DIRSEP + configFile;
         logger.info("Config Path is " + configPath);
 
-        logger.info("Starting  == GLOBAL SUB RESOLVER == " + version);
+        logger.info("Starting  == GLOBAL SUB RESOLVER == " + VERSION);
 
         try {
             myPrefs = new Preferences(configPath);

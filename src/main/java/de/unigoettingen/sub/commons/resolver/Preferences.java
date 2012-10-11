@@ -47,12 +47,13 @@ import org.xml.sax.SAXException;
  *
  */
 public class Preferences {
+
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     public static String CONFIGFILE = "resolver_config.xml";
     private String logoImage = "./images/SUBLogo.gif";
     private String contact = "";
     private List<LocalResolver> resolvers = null;
-    private int max_threadruntime = 30000;
+    private int maxThreadRuntime = 30000;
 
     /**
      * The constructor need the filename; the preferences are read from this
@@ -82,6 +83,7 @@ public class Preferences {
 
             if (!topmostelement.getNodeName().equals("config")) {
                 logger.error("ERROR reading configuration file " + filename + " - doesn't seem to be a valid configuration file");
+                return false;
             }
 
             // get all child-elements and parse them
@@ -90,24 +92,20 @@ public class Preferences {
             for (int x = 0; x < allchildnodes.getLength(); x++) {
                 Node singlenode = allchildnodes.item(x);
 
-                if (singlenode.getNodeType() == Node.ELEMENT_NODE) {
-
-                    if (singlenode.getNodeName().equals("localresolver")) {		// read list of all types, which are serials 
-                        resolvers = readAllLocalResolvers(singlenode);
-                    }
-                    if (singlenode.getNodeName().equals("maxThreadRuntime")) {
-                        String debug_str = getValueOfElement(singlenode);
-                        max_threadruntime = Integer.parseInt(debug_str);
-                    }
-                    if (singlenode.getNodeName().equals("contact")) {
-                        contact = getValueOfElement(singlenode);
-                    }
-                    if (singlenode.getNodeName().equals("logoImage")) {
-                        logoImage = getValueOfElement(singlenode);
-                    }
-                } else {
+                if (singlenode.getNodeType() != Node.ELEMENT_NODE) {
                     continue; // next iteration in loop
                 }
+                if (singlenode.getNodeName().equals("localresolver")) {		// read list of all types, which are serials 
+                    resolvers = readAllLocalResolvers(singlenode);
+                } else if (singlenode.getNodeName().equals("maxThreadRuntime")) {
+                    String debug_str = getValueOfElement(singlenode);
+                    maxThreadRuntime = Integer.parseInt(debug_str);
+                } else if (singlenode.getNodeName().equals("contact")) {
+                    contact = getValueOfElement(singlenode);
+                } else if (singlenode.getNodeName().equals("logoImage")) {
+                    logoImage = getValueOfElement(singlenode);
+                }
+
             } // end of for loop
         } catch (ParserConfigurationException pce) {
             logger.error("ERROR: couldn't parse XML file ", pce);
@@ -122,7 +120,7 @@ public class Preferences {
 
         // check fields, which must have a value (e.h. database fields)
         if ((resolvers == null) || (resolvers.size() == 0)) {
-            logger.error("Preferences: - error - No indexes found");
+            logger.error("Preferences: - error - No resolvers found");
             return false;
         }
         return true;
@@ -145,19 +143,18 @@ public class Preferences {
         return localResolvers;
     }
 
-
     /**
-     * @return the max_threadruntime
+     * @return the maxThreadRuntime
      */
-    protected int getMax_threadruntime() {
-        return max_threadruntime;
+    protected int getMaxThreadRuntime() {
+        return maxThreadRuntime;
     }
 
     /**
-     * @param max_threadruntime the max_threadruntime to set
+     * @param maxThreadRuntime the maxThreadRuntime to set
      */
-    protected void setMax_threadruntime(int max_threadruntime) {
-        this.max_threadruntime = max_threadruntime;
+    protected void setMaxThreadRuntime(int max_threadruntime) {
+        this.maxThreadRuntime = max_threadruntime;
     }
 
     /**
@@ -175,7 +172,7 @@ public class Preferences {
     protected void setLogoImage(String logoImage) {
         this.logoImage = logoImage;
     }
-    
+
     /**
      * Contact
      *
@@ -200,7 +197,7 @@ public class Preferences {
     protected List<LocalResolver> getResolvers() {
         return resolvers;
     }
-    
+
     /**
      * Reads the data for a single LPIR (local resolver)
      *
@@ -251,6 +248,4 @@ public class Preferences {
         }
         return null;
     }
-    
-    
 }
