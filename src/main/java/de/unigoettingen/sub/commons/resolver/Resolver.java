@@ -145,7 +145,7 @@ public class Resolver extends HttpServlet {
 
 
         // just output debug information
-        if ((answeredRequest != null) || (answeredRequest.size() > 0)) {
+        if (answeredRequest.size() > 0) {
             for (ResolvedURL ru : answeredRequest) {
                 logger.debug("SUBResolver: ru.URL: " + ru.getUrl() + "\n"
                         + "SUBResolver: ru.PURL:" + ru.getPurl() + "\n"
