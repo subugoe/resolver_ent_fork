@@ -215,13 +215,7 @@ public class Resolver extends HttpServlet {
      */
     private void showHTML_NoHits(HttpServletResponse response)
             throws IOException {
-        PrintWriter webout;
-        try {
-            webout = response.getWriter(); // get stream;
-        } catch (IOException ioe) {
-            logger.error("IO Exception while getting response stream", ioe);
-            return;
-        }
+        PrintWriter webout = response.getWriter(); // get stream;
         webout.println(HTML_START);
         webout.println("<title>error - document not found</title>");
         webout.println("</head><body>");
@@ -243,14 +237,8 @@ public class Resolver extends HttpServlet {
      */
     private void showHTML_Error(HttpServletResponse response)
             throws IOException {
-        PrintWriter webout;
+        PrintWriter webout = response.getWriter(); // get stream;
         String errorMailAdress = myPrefs.getContact();
-        try {
-            webout = response.getWriter(); // get stream;
-        } catch (IOException ioe) {
-            logger.error("IO Exception while getting response stream", ioe);
-            return;
-        }
         webout.println(HTML_START);
         webout.println("<title>error - internal error</title>");
         webout.println("</head><body>");
