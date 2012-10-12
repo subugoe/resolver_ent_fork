@@ -37,13 +37,15 @@ import org.xml.sax.SAXException;
 public class LocalResolverConnectorThread extends Thread {
 
     static Logger logger = Logger.getLogger(Resolver.class.getName());
-    private String url; // URL or the local resolver to connect for resolution
+    private String url;
     private int timeout;
     private List<ResolvedURL> allURLs;
+    private String localresolverurl = null; // URL or the local resolver to connect for resolution
 
-    public LocalResolverConnectorThread(String url, int timeout) {
-        url = url;
-        timeout = timeout;
+    public LocalResolverConnectorThread(String inUrl, int inTimeout) {
+        url = inUrl;
+        timeout = inTimeout;
+        localresolverurl = inUrl;
     }
 
     /**
@@ -108,6 +110,7 @@ public class LocalResolverConnectorThread extends Thread {
      * @return LinkedList containing <pre>ResolvedURL</pre> objects
      */
     private List<ResolvedURL> getResponse(InputStream responseStream) {
+
         List<ResolvedURL> allURL = new LinkedList();
 
         try {
@@ -127,13 +130,20 @@ public class LocalResolverConnectorThread extends Thread {
             for (int x = 0; x < allchildnodes.getLength(); x++) {
                 Node singlenode = allchildnodes.item(x);
 
+                /*
+                 if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equals("header"))) {
+                 }
+                 */
+
                 if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && ((singlenode.getNodeName().equalsIgnoreCase("resolvedPURLs")) || (singlenode.getNodeName().equalsIgnoreCase("resolvedLPIs")))) {
                     ResolvedURL ru = readPURL(singlenode);
                     if (ru != null) {
                         allURL.add(ru);
                     }
                 }
+
             }
+
         } catch (ParserConfigurationException pce) {
             logger.error("SUBResolver: ERROR: couldn't parse XML file occured while receiving response for url: " + url, pce);
             return null;
@@ -173,10 +183,14 @@ public class LocalResolverConnectorThread extends Thread {
                 //Not a Element Node
                 continue; 
             }
-            String nodeName = singlenode.getNodeName().toUpperCase();
-            // this is for version 0.1: PURL
-            // this is for version 0.2: LPI
-            if (nodeName.equals("PURL") || nodeName.equals("LPI")) {
+            
+            // this is for version 0.1
+            if (singlenode.getNodeName().equalsIgnoreCase("PURL")) {
+                purlnode = singlenode;
+                break; // get out of loop
+            }
+            // this is for version 0.2
+            if (singlenode.getNodeName().equalsIgnoreCase("LPI")) {
                 purlnode = singlenode;
                 break; // get out of loop
             }
@@ -184,7 +198,7 @@ public class LocalResolverConnectorThread extends Thread {
 
         if (purlnode == null) {
             // no node with name PURL found
-            logger.warn("PURL/LPI node NOT found for URL:" + url);
+            logger.warn("PURL/LPI node NOT found for URL:" + localresolverurl);
             return null;
         }
 
@@ -198,23 +212,27 @@ public class LocalResolverConnectorThread extends Thread {
                 continue; 
             }
             
-            String nodeName = singlenode.getNodeName();
             // this is vor version 0.1
-            if (nodeName.equalsIgnoreCase("requestedPURL")) {
+            if (singlenode.getNodeName().equalsIgnoreCase("requestedPURL")) {
                 purl = Resolver.getValueOfElement(singlenode);
-            } else
+            }
             // this is for version 0.2
-            if (nodeName.equalsIgnoreCase("requestedLPI")) {
+            if (singlenode.getNodeName().equalsIgnoreCase("requestedLPI")) {
                 purl = Resolver.getValueOfElement(singlenode);
-            } else if (nodeName.equalsIgnoreCase("service")) {
+            }
+            if (singlenode.getNodeName().equalsIgnoreCase("service")) {
                 service = Resolver.getValueOfElement(singlenode);
-            } else if (nodeName.equalsIgnoreCase("servicehome")) {
+            }
+            if (singlenode.getNodeName().equalsIgnoreCase("servicehome")) {
                 servicehome = Resolver.getValueOfElement(singlenode);
-            } else if (nodeName.equalsIgnoreCase("url")) {
+            }
+            if (singlenode.getNodeName().equalsIgnoreCase("url")) {
                 resolverurl = Resolver.getValueOfElement(singlenode);
-            } else if (nodeName.equalsIgnoreCase("version")) {
+            }
+            if (singlenode.getNodeName().equalsIgnoreCase("version")) {
                 version = Resolver.getValueOfElement(singlenode);
-            } else if (nodeName.equalsIgnoreCase("access")) {
+            }
+            if (singlenode.getNodeName().equalsIgnoreCase("access")) {
                 access = Resolver.getValueOfElement(singlenode);
             }
         }
@@ -234,12 +252,12 @@ public class LocalResolverConnectorThread extends Thread {
             if (version != null) {
                 ru.setVersion(version);
             }
-            logger.info("SUBResolver: response from " + url + " is: local URL:" + resolverurl);
+            logger.info("SUBResolver: response from " + localresolverurl + " is: local URL:" + resolverurl);
             return ru;
 
         } else {
             // not an appropriate answer
-            logger.warn("SUBResolver: response from " + url + " is empty or invalid");
+            logger.warn("SUBResolver: response from " + localresolverurl + " is empty or invalid");
             return null;
         }
     }
