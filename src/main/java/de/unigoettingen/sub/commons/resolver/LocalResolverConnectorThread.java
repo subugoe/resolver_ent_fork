@@ -130,18 +130,12 @@ public class LocalResolverConnectorThread extends Thread {
             for (int x = 0; x < allchildnodes.getLength(); x++) {
                 Node singlenode = allchildnodes.item(x);
 
-                /*
-                 if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && (singlenode.getNodeName().equals("header"))) {
-                 }
-                 */
-
                 if ((singlenode.getNodeType() == Node.ELEMENT_NODE) && ((singlenode.getNodeName().equalsIgnoreCase("resolvedPURLs")) || (singlenode.getNodeName().equalsIgnoreCase("resolvedLPIs")))) {
                     ResolvedURL ru = readPURL(singlenode);
                     if (ru != null) {
                         allURL.add(ru);
                     }
                 }
-
             }
 
         } catch (ParserConfigurationException pce) {
@@ -181,16 +175,13 @@ public class LocalResolverConnectorThread extends Thread {
             Node singlenode = allchildnodes.item(x);
             if (singlenode.getNodeType() != Node.ELEMENT_NODE) {
                 //Not a Element Node
-                continue; 
+                continue;
             }
-            
-            // this is for version 0.1
-            if (singlenode.getNodeName().equalsIgnoreCase("PURL")) {
-                purlnode = singlenode;
-                break; // get out of loop
-            }
-            // this is for version 0.2
-            if (singlenode.getNodeName().equalsIgnoreCase("LPI")) {
+
+            String nodeName = singlenode.getNodeName().toUpperCase();
+            // this is for version 0.1: PURL
+            // this is for version 0.2: LPI
+            if (nodeName.equals("PURL") || nodeName.equals("LPI")) {
                 purlnode = singlenode;
                 break; // get out of loop
             }
@@ -209,30 +200,25 @@ public class LocalResolverConnectorThread extends Thread {
             Node singlenode = allchildnodes.item(x);
             if (singlenode.getNodeType() != Node.ELEMENT_NODE) {
                 //Not a Element Node
-                continue; 
+                continue;
             }
-            
+
+            String nodeName = singlenode.getNodeName();
             // this is vor version 0.1
-            if (singlenode.getNodeName().equalsIgnoreCase("requestedPURL")) {
+            if (nodeName.equalsIgnoreCase("requestedPURL")) {
                 purl = Resolver.getValueOfElement(singlenode);
-            }
-            // this is for version 0.2
-            if (singlenode.getNodeName().equalsIgnoreCase("requestedLPI")) {
+            } else // this is for version 0.2
+            if (nodeName.equalsIgnoreCase("requestedLPI")) {
                 purl = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("service")) {
+            } else if (nodeName.equalsIgnoreCase("service")) {
                 service = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("servicehome")) {
+            } else if (nodeName.equalsIgnoreCase("servicehome")) {
                 servicehome = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("url")) {
+            } else if (nodeName.equalsIgnoreCase("url")) {
                 resolverurl = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("version")) {
+            } else if (nodeName.equalsIgnoreCase("version")) {
                 version = Resolver.getValueOfElement(singlenode);
-            }
-            if (singlenode.getNodeName().equalsIgnoreCase("access")) {
+            } else if (nodeName.equalsIgnoreCase("access")) {
                 access = Resolver.getValueOfElement(singlenode);
             }
         }
