@@ -139,6 +139,8 @@ public class Resolver extends HttpServlet {
 
         // No hit is available
         if (answeredRequest.size() == 0) {
+            // no result
+            logger.info("SUBResolver: sorry, no result");
             showHTML_NoHits(webout);
             return;
         }
@@ -163,9 +165,6 @@ public class Resolver extends HttpServlet {
                         + "<br/>");
             }
             webout.println("</td></tr></table>" + showFooter() + HTML_END); // end of html-document
-        } else {
-            // no result
-            logger.info("SUBResolver: sorry, no result");
         }
     }
 
