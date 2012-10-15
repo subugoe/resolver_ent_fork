@@ -88,7 +88,6 @@ public class LocalResolverConnectorThread extends Thread {
             // Release the connection.
             method.releaseConnection();
         }
-        //finished = true;
     }
 
     /**

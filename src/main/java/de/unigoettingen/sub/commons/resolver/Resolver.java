@@ -259,6 +259,7 @@ public class Resolver extends HttpServlet {
      * node.
      *
      */
+    //TODO: Try to get rid of this, avid circular dependencies
     protected static String getValueOfElement(Node inNode) {
         NodeList childnodes = inNode.getChildNodes();
 

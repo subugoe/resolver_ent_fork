@@ -38,7 +38,7 @@ public class ResolverTest {
     public void testResolver () throws IOException, SAXException {
         assertNotNull(sr);
         ServletUnitClient sc = sr.newClient();
-        WebRequest request   = new GetMethodWebRequest( "http://localhost:8080/resolver/purl" );
+        WebRequest request = new GetMethodWebRequest("http://localhost:8080/resolver/purl");
         request.setParameter("PPN726109029", "");
         WebResponse response = sc.getResponse(request);
 
