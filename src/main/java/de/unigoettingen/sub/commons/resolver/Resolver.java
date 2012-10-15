@@ -300,7 +300,7 @@ public class Resolver extends HttpServlet {
             throw new ServletException("Configuration File not found!", fe);
         }
 
-        logger.fatal("Loglevel: " + logger.getEffectiveLevel().toString() + " using Log4J");
+        logger.info("Loglevel: " + logger.getEffectiveLevel().toString() + " using Log4J");
 
     }
 }
