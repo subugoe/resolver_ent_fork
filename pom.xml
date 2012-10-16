@@ -66,7 +66,7 @@
             <name>Markus Enders</name>
             <email>Markus.Enders@bl.uk</email>
             <roles>
-                <role>develper</role>
+                <role>developer</role>
             </roles>
         </developer>
         <developer>
@@ -86,7 +86,16 @@
             </roles>
         </developer>
     </developers>
-
+    <organization>
+        <name>SUB Göttingen</name>
+        <url>http://www.sub.uni-goettingen.de</url>
+    </organization>
+    <distributionManagement>
+        <site>
+            <id>site.server</id>
+            <url>dav:http://develop.sub.uni-goettingen.de/maven-sites/${project.groupId}/resolver-${project.version}</url>
+        </site>
+    </distributionManagement>
     <build>
         <plugins>
             <plugin>
@@ -141,5 +150,123 @@
             </plugin>
         </plugins>
     </build>
-
+    <scm>
+        <connection>scm:git:git@github.com:subugoe/resolver.git</connection>
+        <url>https://github.com/subugoe/resolver</url>
+        <developerConnection>scm:git:git@github.com:subugoe/resolver.git</developerConnection>
+    </scm>
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>2.1.1</version>
+                <inherited>true</inherited>
+            </plugin>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.1.2</version>
+                <inherited>true</inherited>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>dependencies</report>
+                            <report>dependency-convergence</report>
+                            <report>dependency-management</report>
+                            <report>index</report>
+                            <report>plugin-management</report>
+                            <report>summary</report>
+                            <report>project-team</report>
+                            <report>cim</report>
+                            <report>issue-tracking</report>
+                            <report>license</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <reportSets>
+                    <reportSet>
+                        <id>non-aggregate</id>
+                        <configuration>
+                            <show>package</show>
+                            <version>true</version>
+                            <javadocVersion>${source.version}</javadocVersion>
+                            <failOnError>false</failOnError>
+                            <linksource>true</linksource>
+                            <serialwarn>true</serialwarn>
+                            <detectLinks />
+                            <links>
+                                <link>http://java.sun.com/javase/6/docs/api/</link>
+                                <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
+                                <link>http://download.eclipse.org/modeling/mdt/uml2/javadoc/2.2.2/</link>
+                                <link>http://jakarta.apache.org/commons/collections/apidocs</link>
+                                <link>http://jakarta.apache.org/commons/logging/apidocs/</link>
+                                <link>http://www.junit.org/junit/javadoc/</link>
+                                <link>http://logging.apache.org/log4j/docs/api/</link>
+                                <link>http://jakarta.apache.org/regexp/apidocs/</link>
+                                <link>http://velocity.apache.org/engine/devel/apidocs/</link>
+                            </links>
+                            <detectOfflineLinks>false</detectOfflineLinks>
+                        </configuration>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.5</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+                <version>2.0-beta-2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <tagListOptions>
+                        <tagClasses>
+                            <tagClass>
+                                <displayName>Todo Work</displayName>
+                                <tags>
+                                    <tag>
+                                        <matchString>todo</matchString>
+                                        <matchType>ignoreCase</matchType>
+                                    </tag>
+                                    <tag>
+                                        <matchString>FIXME</matchString>
+                                        <matchType>ignoreCase</matchType>
+                                    </tag>
+                                    <tag>
+                                        <matchString>@deprecated</matchString>
+                                        <matchType>exact</matchType>
+                                    </tag>
+                                </tags>
+                            </tagClass>
+                        </tagClasses>
+                    </tagListOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
