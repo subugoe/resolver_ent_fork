@@ -11,9 +11,9 @@ import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
 import java.io.File;
 import java.io.IOException;
-import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 /**
