@@ -3,8 +3,10 @@
  ------
  Hans-Werner Hilse 
  <mailto:hilse@sub.uni-goettingen.de>
+ Christian Mahnke 
+ <mailto:mahnke@sub.uni-goettingen.de>
  ------
- 2010-08-11
+ 2012-10-16
  ------
 
 Zweck
@@ -128,3 +130,73 @@ Kommunikationsprotokoll
    * „access“: derzeit wohl generell „free“, könnte zur Zugriffsbeschränkung bzw. zum Rechtemanagement verwendet werden.
 
    * beliebig viele „<identifier>“-Nodes: Können weitere Identifier angeben, die das vom LPI identifizierte Objekt hat. Attribut „schema“ identifiziert ein bestimmtes Identifier-Schema und muss verpflichtend dazu angegeben werden. Derzeit aber keinerlei entsprechende Funktionalität in zentralem Resolver implementiert.
+
+Installation
+
+ Dieser Abschnitt beschreibt die Installation des SUB Resolvers, sie wurde im Rahmen des Aufbaus der Tomcat Farms als Beispiel erstellt.
+
+* Quellcode
+
+ Der Quellcode des SUB Resolvers ist auf {{{https://github.com/subugoe/resolver}GitHub}} hinterlegt. Zum beziehen und kompilieren werden {{{http://git-scm.com/}Git}}, {{{http://www.java.com/de/download/}Java}} und {{{http://maven.apache.org/}Maven}} benötigt. Eine installierbare Date erhält man wenn man folgende Aufrufe tätigt:
+
++-----+
+git clone https://github.com/subugoe/resolver.git
+cd resolver
+mvn package
++-----+
+
+ Daraufhin sollte man eine WAR Datei im Unterordner <<"target">> finden.
+
+ Da der Resover in die Entwicklungsinfrastruktur eingebunden ist, werden fertige Programmpakete auch im {{{https://repository.bibforge.org/archiva/browse/de.unigoettingen.sub.commons/resolver}SUB Archiva Repository}} hinterlegt.
+
+* Deployment
+
+ Die WAR Datei kann einfach in den Ordner <<"webapps">> gelegt werden. Soll das Servlet direckt, also ohne Pfadangabe (wie "resolver") in der URL aufgerufen werden, muss das Verzeichnis des Servlets in <<"ROOT">> umbenannt werden.
+
+** Konfiguration
+
+ Die Konfiguration ist Verzeichnis <<"WEB-INF">> in der Datei <<"resolver_cponfig.xml">> (im vom Tomcat entpackten Servlet Ordner) hinterlegt:
+
+ * <<"contact">> - Kontakt Email Adresse - wird bei Fehlern angezeigt
+
+ * <<"maxThreadRuntime">> - Wie lange soll auf externe Anfragen gewartet werden (Millisekunden)
+
+ * <<"logoImage">> - Welches Logo soll verwendet werden, relative oder absolute URL
+
+  * Abschnitt <<"localresolver">>
+
+   * <<"name">> - Ein frei wählbarer Name 
+
+   * <<"url">> - URL Präfix, an den der Identifier angehängt wird.
+
++-----+
+<?xml version=“1.0“?>
+<config>
+    <contact>kothe@sub.uni-goettingen.de</contact>
+    <maxThreadRuntime>5000</maxThreadRuntime> 
+    <logoImage>./images/SUBLogo.gif</logoImage>
+    <localresolver>
+        <!-- define a single resolver; -->
+        <resolver>
+            <name>Hans-Werners Server</name>
+    	    <url>http://w3a.sub.uni-goettingen.de/scripts/persistent-identifier/?lpi=</url>
+        </resolver>
+        <resolver>
+            <name>DigiZeitschriften</name>
+            <url>http://www.digizeitschriften.de/index.php?id=resolvexml&amp;PPN=</url>
+        </resolver>
+       <resolver>
+           <name>Uni-Verlag</name>
+           <url>http://www.univerlag.uni-goettingen.de/content/purl/?lpi=</url>
+        </resolver>
+        <resolver>
+            <name>Göttingen Digitalisierungszentrum</name>
+            <url>http://gdz.sub.uni-goettingen.de/dms/resolvexml/?</url>
+        </resolver>
+        <resolver>
+            <name>Goescholar: Publication Server Uni Götttingen</name>
+            <url>http://134.76.163.170:8080/jspui/resolvexml/</url>           
+        </resolver> 
+    </localresolver>
+</config>
++-----+
