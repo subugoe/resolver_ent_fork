@@ -200,3 +200,19 @@ mvn package
     </localresolver>
 </config>
 +-----+
+
+** Funktionstest
+
+ Der Resolver kann z.B. mit {{{http://www.gnu.org/software/wget/}wget}} getestet werden:
+
++-----+
+wget http://localhost:8080/resolver/purl?PPN726109029
++-----+
+
+ Alternativ kann auch mit telnet ein eigener Request (z.B. an einen virtuellen Host) abgesetzt werden
+
++-----+
+telnet localhost 80
+GET /purl?PPN726109029 HTTP/1.1
+Host: resolver.sub.uni-goettingen.de
++-----+
