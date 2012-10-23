@@ -107,29 +107,29 @@ Kommunikationsprotokoll
 
  * Root-Node ist das „response“-Element
 
- * Child-Node „header“ mit eigenem Child-Node „version“, für Versionierung des Datenformats, derzeit immer „0.1“.
+ * Child-Node "header" mit eigenem Child-Node "version", für Versionierung des Datenformats, derzeit immer "0.1".
 
- * Child-Node „resolvedLPIs“:
+ * Child-Node "resolvedLPIs":
 
   * bleibt leer, falls angefragter LPI zu keinerlei URLs aufgelöst werden kann
 
   * enthält ansonsten für jede mögliche Auflösung (einzelner LPIR kann also auch mehrere Auflösungen anbieten) ein Child-Node „LPI“ mit folgenden Child-Nodes:
 
-   * „requestedLPI“ nur noch einmal die Wiederholung des angefragten LPIs, reine Debug- und Test-Funktion
+   * "requestedLPI" nur noch einmal die Wiederholung des angefragten LPIs, reine Debug- und Test-Funktion
 
-   * „service“: Bezeichnung des Services, der für die Pflege der Beziehung Identifier<->aufgelöstes Objekt zuständig ist
+   * "service": Bezeichnung des Services, der für die Pflege der Beziehung Identifier<->aufgelöstes Objekt zuständig ist
 
-   * „servicehome“: Informationsseite (URL) dieses Services
+   * "servicehome": Informationsseite (URL) dieses Services
 
-   * „url“: URL, zu dem LPI aufgelöst wird
+   * "url": URL, zu dem LPI aufgelöst wird
 
-   * „mime“: Information über MIME-Typ des URL-Ziels
+   * "mime": Information über MIME-Typ des URL-Ziels
 
-   * „version“: derzeit nicht benutzt, kann Angaben zur Version eines Objekts enthalten (könnte mit in Auswahlliste vom zentralen Resolver angezeigt werden)
+   * "version": derzeit nicht benutzt, kann Angaben zur Version eines Objekts enthalten (könnte mit in Auswahlliste vom zentralen Resolver angezeigt werden)
 
-   * „access“: derzeit wohl generell „free“, könnte zur Zugriffsbeschränkung bzw. zum Rechtemanagement verwendet werden.
+   * "access": derzeit wohl generell „free“, könnte zur Zugriffsbeschränkung bzw. zum Rechtemanagement verwendet werden.
 
-   * beliebig viele „<identifier>“-Nodes: Können weitere Identifier angeben, die das vom LPI identifizierte Objekt hat. Attribut „schema“ identifiziert ein bestimmtes Identifier-Schema und muss verpflichtend dazu angegeben werden. Derzeit aber keinerlei entsprechende Funktionalität in zentralem Resolver implementiert.
+   * beliebig viele „<identifier>“-Nodes: Können weitere Identifier angeben, die das vom LPI identifizierte Objekt hat. Attribut "schema" identifiziert ein bestimmtes Identifier-Schema und muss verpflichtend dazu angegeben werden. Derzeit aber keinerlei entsprechende Funktionalität in zentralem Resolver implementiert.
 
 Installation
 
