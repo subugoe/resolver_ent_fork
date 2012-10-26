@@ -85,6 +85,7 @@ public class LocalResolverConnectorThread extends Thread {
         } catch (IOException e) {
             logger.error("SUBResolver: Fatal transport error: " + e.getMessage() + "\n             url:" + url, e);
         } finally {
+            logger.info("LocalResolverConnectorThread for " + url + " finished");
             // Release the connection.
             method.releaseConnection();
         }
