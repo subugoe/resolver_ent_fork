@@ -3,7 +3,7 @@
 <config>
     <contact>kothe@sub.uni-goettingen.de</contact>
     <maxThreadRuntime>5000</maxThreadRuntime> 
-    <logoImage>./images/SUBLogo.gif</logoImage>
+    <logoImage>./images/SUBLogo-new.png</logoImage>
     <localresolver>
         <!-- define a single resolver; -->
         <!-- <resolver>

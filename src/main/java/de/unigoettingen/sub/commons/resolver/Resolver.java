@@ -39,9 +39,10 @@ public class Resolver extends HttpServlet {
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     private static final long serialVersionUID = 0022001;
     private Preferences myPrefs = null;
+    public static String CSS = "./style.css";
     public static final String VERSION = "version 0.3";
     private static final String CONTENT_TYPE = "text/html";
-    private static final String HTML_START = "<html><head>";
+    private static final String HTML_START = "<html><head><link media=\"all\" href=\"" + CSS + "\" type=\"text/css\" rel=\"stylesheet\">";
     private static final String TITLE = "<title>SUB resolver</title>";
     private static final String HEAD_BODY = "</head><body>";
     private static final String HTML_END = "</head><body>";
