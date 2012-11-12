@@ -3,3 +3,19 @@ body {
     font-size: 12px;
     line-height: 18px;
 }
+
+img {
+    border: 0 none;
+}
+
+a {
+    cursor: pointer;
+}
+
+h1 {
+    color: #163675;
+    font-size: 18px;
+    line-height: 130%;
+    padding: 0 0 10px;
+    margin-bottom: 20px;
+}

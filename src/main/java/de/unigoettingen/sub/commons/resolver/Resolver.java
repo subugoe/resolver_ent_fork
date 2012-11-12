@@ -212,11 +212,11 @@ public class Resolver extends HttpServlet {
                 + "An internal error occured. Please report the URL and the error-message to"
                 + " <a href=\"mailto:" + errorMailAdress + "\">" + errorMailAdress + "</a>"
                 + HTML_END); // end of html-document
-
     }
     
     /**
-     * 
+     * Retuns the HTML Element pointing to the CSS as String
+     * @returns the HTML fragment pointing to the CSS file
      */
     private String printCSSLink () {
         return "<link media=\"all\" href=\"" + myPrefs.getCssFile() + "\" type=\"text/css\" rel=\"stylesheet\">";
@@ -228,8 +228,8 @@ public class Resolver extends HttpServlet {
      */
     private String showHeader() {
         return "<center><table width=\"600\"><tr><td>"
-                + "<center><img width=\"20%\" src=\"" + myPrefs.getLogoImage()
-                + "\"/></center>" + "<br><b>Document Resolver</b></center>"
+                + "<br/><center><img width=\"95%\" src=\"" + myPrefs.getLogoImage()
+                + "\"/></center><br/><br/><h1>Document Resolver</h1></center>"
                 + "</td></tr></table></center>";
     }
 
@@ -240,7 +240,7 @@ public class Resolver extends HttpServlet {
     private String showFooter() {
         return "<center><table width=\"600\"><tr><td>"
                 + "<hr><font size=\"-1\">"
-                + "(C) Nieders&auml;chsische Staats- und Universit&auml;tsbibliothek G&ouml;ttingen, 2005"
+                + "(C) Nieders&auml;chsische Staats- und Universit&auml;tsbibliothek G&ouml;ttingen, 2012"
                 + "</font></td></tr></table></center>";
     }
 
