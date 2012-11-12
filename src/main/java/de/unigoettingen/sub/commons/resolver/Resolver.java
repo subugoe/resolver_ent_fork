@@ -39,10 +39,9 @@ public class Resolver extends HttpServlet {
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     private static final long serialVersionUID = 0022001;
     private Preferences myPrefs = null;
-    public static String CSS = "./style.css";
     public static final String VERSION = "version 0.3";
     private static final String CONTENT_TYPE = "text/html";
-    private static final String HTML_START = "<html><head><link media=\"all\" href=\"" + CSS + "\" type=\"text/css\" rel=\"stylesheet\">";
+    private static final String HTML_START = "<html><head>";
     private static final String TITLE = "<title>SUB resolver</title>";
     private static final String HEAD_BODY = "</head><body>";
     private static final String HTML_END = "</head><body>";
@@ -154,7 +153,7 @@ public class Resolver extends HttpServlet {
             }
 
             // output HTML
-            webout.println(HTML_START + TITLE + HEAD_BODY + showHeader()
+            webout.println(HTML_START + printCSSLink() + TITLE + HEAD_BODY + showHeader()
                     + "<center><table width=\"600\"><tr><td>"
                     + "The document you requested " + request.getRequestURL() + "?" + parameter
                     + " is available at:<br/>");
@@ -187,7 +186,7 @@ public class Resolver extends HttpServlet {
      * @throws IOException
      */
     private void showHTML_NoHits(PrintWriter webout) {
-        webout.println(HTML_START
+        webout.println(HTML_START + printCSSLink()
                 + "<title>error - document not found</title>"
                 + HEAD_BODY + showHeader() + "<center><table width=\"600\"><tr><td>"
                 + "Unfortunately the URL could not be resolved. None of the"
@@ -209,13 +208,20 @@ public class Resolver extends HttpServlet {
             throws IOException {
         PrintWriter webout = response.getWriter(); // get stream;
         String errorMailAdress = myPrefs.getContact();
-        webout.println(HTML_START + "<title>error - internal error</title>" + HEAD_BODY
+        webout.println(HTML_START + printCSSLink() + "<title>error - internal error</title>" + HEAD_BODY
                 + "An internal error occured. Please report the URL and the error-message to"
                 + " <a href=\"mailto:" + errorMailAdress + "\">" + errorMailAdress + "</a>"
                 + HTML_END); // end of html-document
 
     }
-
+    
+    /**
+     * 
+     */
+    private String printCSSLink () {
+        return "<link media=\"all\" href=\"" + myPrefs.getCssFile() + "\" type=\"text/css\" rel=\"stylesheet\">";
+    }
+    
     /**
      * Returns the header (with logo) of every HTML-page
      *

@@ -51,6 +51,7 @@ public class Preferences {
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     public static final String CONFIGFILE = "resolver_config.xml";
     private String logoImage = "./images/SUBLogo.gif";
+    private String cssFile = "./style.css";
     private String contact = "";
     private List<LocalResolver> resolvers = null;
     private int maxThreadRuntime = 30000;
@@ -104,6 +105,8 @@ public class Preferences {
                     contact = Resolver.getValueOfElement(singlenode);
                 } else if (nodeName.equals("logoimage")) {
                     logoImage = Resolver.getValueOfElement(singlenode);
+                } else if (nodeName.equals("css")) {
+                    cssFile = Resolver.getValueOfElement(singlenode);
                 }
 
             } // end of for loop
@@ -173,6 +176,22 @@ public class Preferences {
         this.logoImage = logoImage;
     }
 
+    /**
+     * CSS File
+     *
+     * @return the CSS file
+     */
+    protected String getCssFile() {
+        return cssFile;
+    }
+
+    /**
+     * @param cssFile the CSS file
+     */
+    protected void setCssFile(String cssFile) {
+        this.cssFile = cssFile;
+    }
+    
     /**
      * Contact
      *
