@@ -209,8 +209,10 @@ public class Resolver extends HttpServlet {
         PrintWriter webout = response.getWriter(); // get stream;
         String errorMailAdress = myPrefs.getContact();
         webout.println(HTML_START + printCSSLink() + "<title>error - internal error</title>" + HEAD_BODY
+                + showHeader()
                 + "An internal error occured. Please report the URL and the error-message to"
                 + " <a href=\"mailto:" + errorMailAdress + "\">" + errorMailAdress + "</a>"
+                + showFooter()
                 + HTML_END); // end of html-document
     }
     
@@ -240,7 +242,7 @@ public class Resolver extends HttpServlet {
     private String showFooter() {
         return "<center><table width=\"600\"><tr><td>"
                 + "<hr><font size=\"-1\">"
-                + "(C) Nieders&auml;chsische Staats- und Universit&auml;tsbibliothek G&ouml;ttingen, 2012"
+                + "&copy;  Nieders&auml;chsische Staats- und Universit&auml;tsbibliothek G&ouml;ttingen, 2012"
                 + "</font></td></tr></table></center>";
     }
 
