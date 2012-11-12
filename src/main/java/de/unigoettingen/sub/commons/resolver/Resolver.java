@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import java.util.LinkedList;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -99,7 +97,7 @@ public class Resolver extends HttpServlet {
             } catch (InterruptedException e) {
                 // thread was interrupted
                 response.setContentType("text/html");
-                showHTML_Error(response);
+                showHtmlError(response);
                 return;
             }
         }
@@ -129,7 +127,6 @@ public class Resolver extends HttpServlet {
             return;
         }
 
-
         // set HTTP header - since HTML is comming after this point
         response.setContentType(CONTENT_TYPE);
         // output the result
@@ -141,7 +138,7 @@ public class Resolver extends HttpServlet {
         if (answeredRequest.size() == 0) {
             // no result
             logger.info("SUBResolver: sorry, no result");
-            showHTML_NoHits(webout);
+            showHtmlNoHits(webout);
             return;
         }
 
@@ -185,7 +182,7 @@ public class Resolver extends HttpServlet {
      * @param webout
      * @throws IOException
      */
-    private void showHTML_NoHits(PrintWriter webout) {
+    private void showHtmlNoHits(PrintWriter webout) {
         webout.println(HTML_START + printCSSLink()
                 + "<title>error - document not found</title>"
                 + HEAD_BODY + showHeader() + "<center><table width=\"600\"><tr><td>"
@@ -204,7 +201,7 @@ public class Resolver extends HttpServlet {
      * @param response
      * @throws IOException
      */
-    private void showHTML_Error(HttpServletResponse response)
+    private void showHtmlError(HttpServletResponse response)
             throws IOException {
         PrintWriter webout = response.getWriter(); // get stream;
         String errorMailAdress = myPrefs.getContact();
