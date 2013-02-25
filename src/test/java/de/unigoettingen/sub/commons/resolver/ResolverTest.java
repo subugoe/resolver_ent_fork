@@ -86,6 +86,7 @@ public class ResolverTest {
         logger.info("Response code is " + String.valueOf(response.getResponseCode()));
     }
 
+    @Ignore
     @Test
     public void testConnectionLeak() throws IOException, SAXException {
         List<String> PPNs = new ArrayList<String>();
