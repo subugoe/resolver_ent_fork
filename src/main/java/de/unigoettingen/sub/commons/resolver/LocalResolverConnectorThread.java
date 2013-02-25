@@ -61,7 +61,8 @@ public class LocalResolverConnectorThread extends Thread {
      * </ul>
      */
     @Override
-    public synchronized void run() {
+    //public synchronized void run() {
+    public void run() {
 
         // create client
         HttpClient client = new HttpClient();
@@ -79,6 +80,7 @@ public class LocalResolverConnectorThread extends Thread {
 
             InputStream responseStream = method.getResponseBodyAsStream();
             allURLs = getResponse(responseStream);
+            responseStream.close();
 
         } catch (HttpException e) {
             logger.error("HTTP Method failed: ", e);

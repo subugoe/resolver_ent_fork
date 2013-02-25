@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
@@ -47,7 +48,7 @@ public class ResolverTest {
         WebResponse response = resolveIdentifier("PPN726109029");
 
         assertNotNull("No response received", response);
-        assertEquals(307, response.getResponseCode());
+        assertEquals(HttpStatus.SC_TEMPORARY_REDIRECT, response.getResponseCode());
         logger.info("Response code is " + String.valueOf(response.getResponseCode()));
     }
 
@@ -70,7 +71,7 @@ public class ResolverTest {
         WebResponse response = sc.getResponse(request);
 
         assertNotNull("No response received", response);
-        assertEquals(307, response.getResponseCode());
+        assertEquals(HttpStatus.SC_TEMPORARY_REDIRECT, response.getResponseCode());
         logger.info("Response code is " + String.valueOf(response.getResponseCode()));
 
     }
@@ -81,7 +82,7 @@ public class ResolverTest {
         WebResponse response = resolveIdentifier("GDZPPN002383659");
 
         assertNotNull("No response received", response);
-        assertEquals(200, response.getResponseCode());
+        assertEquals(HttpStatus.SC_OK, response.getResponseCode());
         logger.info("Response code is " + String.valueOf(response.getResponseCode()));
     }
 
@@ -118,7 +119,38 @@ public class ResolverTest {
         PPNs.add("gs-1/8407");
         PPNs.add("gs-1/8517");
         PPNs.add("gs-1/8384");
+        List<String> resolvedURLs;
+        
+        for (int i = 1; i < TEST_RUNS + 1; i++) {
+            resolvedURLs = new ArrayList<String>();
+            for (String PPN : PPNs) {
+                logger.info("Resolving identifier " + PPN);
+                WebResponse response = resolveIdentifier(PPN);
 
+                assertNotNull("No response received", response);
+                assertTrue("Response not 200 or 307", (response.getResponseCode() == HttpStatus.SC_OK || response.getResponseCode() == HttpStatus.SC_TEMPORARY_REDIRECT));
+                String u = getRedirectURL(response);
+                //This is a test if a resolved URL gets reported twice (race conditions etc)
+                assertFalse("Duplicate URL", resolvedURLs.contains(u));
+                logger.info("Response code is " + String.valueOf(response.getResponseCode()) + " Redirect URL is " + u);
+            }
+        }
+
+    }
+
+    @Ignore
+    @Test
+    public void testBrokenIdentifier() throws IOException, SAXException {
+        List<String> PPNs = new ArrayList<String>();
+        //these shouldn't work
+        PPNs.add("PPN7274834569");
+        PPNs.add("This");
+        PPNs.add("is");
+        PPNs.add("a");
+        PPNs.add("test");
+        PPNs.add("of");
+        PPNs.add("the");
+        PPNs.add("resolver");
         for (int i = 1; i < TEST_RUNS + 1; i++) {
             for (String PPN : PPNs) {
                 logger.info("Resolving identifier " + PPN);
@@ -126,9 +158,10 @@ public class ResolverTest {
 
                 assertNotNull("No response received", response);
                 //assertEquals(200, response.getResponseCode());
+                logger.info("Response code is " + String.valueOf(response.getResponseCode()));
+
             }
         }
-
     }
 
     private WebResponse resolveIdentifier(String identifier) throws IOException, SAXException {
@@ -138,5 +171,13 @@ public class ResolverTest {
         WebRequest request = new GetMethodWebRequest(REQUEST_URI);
         request.setParameter(identifier, "");
         return sc.getResponse(request);
+    }
+
+    private String getRedirectURL(WebResponse wr) {
+        if (wr.getResponseCode() == HttpStatus.SC_TEMPORARY_REDIRECT) {
+            return wr.getHeaderField("Location");
+        } else {
+            return "HTML Redirect";
+        }
     }
 }
