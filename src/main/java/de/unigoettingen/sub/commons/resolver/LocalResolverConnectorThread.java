@@ -41,8 +41,10 @@ public class LocalResolverConnectorThread extends Thread {
     private int timeout;
     private List<ResolvedURL> allURLs;
     private String localresolverurl = null; // URL or the local resolver to connect for resolution
-
-    public LocalResolverConnectorThread(String inUrl, int inTimeout) {
+    private HttpClient client;
+    
+    public LocalResolverConnectorThread(HttpClient inClient, String inUrl, int inTimeout) {
+        client = inClient;
         url = inUrl;
         timeout = inTimeout;
         localresolverurl = inUrl;
@@ -64,8 +66,6 @@ public class LocalResolverConnectorThread extends Thread {
     //public synchronized void run() {
     public void run() {
 
-        // create client
-        HttpClient client = new HttpClient();
         HttpMethod method = new GetMethod(url);
 
         client.setTimeout(timeout); // sets timeout in milliseconds

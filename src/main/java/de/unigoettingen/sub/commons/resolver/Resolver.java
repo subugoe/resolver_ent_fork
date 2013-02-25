@@ -15,6 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -37,6 +39,7 @@ public class Resolver extends HttpServlet {
     static Logger logger = Logger.getLogger(Resolver.class.getName());
     private static final long serialVersionUID = 0022001;
     private Preferences myPrefs = null;
+    private HttpClient httpClient;
     public static final String VERSION = "version 0.3";
     private static final String CONTENT_TYPE = "text/html";
     private static final String HTML_START = "<html><head>";
@@ -83,7 +86,7 @@ public class Resolver extends HttpServlet {
         for (LocalResolver lr : myPrefs.getResolvers()) {
             String url = lr.getURL();
             logger.info("SUBResolver: url:" + url + parameter);
-            LocalResolverConnectorThread rt = new LocalResolverConnectorThread(url + parameter, myPrefs.getMaxThreadRuntime());
+            LocalResolverConnectorThread rt = new LocalResolverConnectorThread(httpClient, url + parameter, myPrefs.getMaxThreadRuntime());
             // create a new thread
             rt.start();   // start thread
             allThreads.add(rt); // add thread to groups of threads
@@ -295,7 +298,6 @@ public class Resolver extends HttpServlet {
             configFile = config.getInitParameter("config");
         }
 
-        //String prefix = getServletContext().getRealPath(DIRSEP + "WEB-INF");
         String configPath = getServletContext().getRealPath(".") + dirsep + "WEB-INF" + dirsep + configFile;
         logger.info("Config Path is " + configPath);
 
@@ -308,6 +310,9 @@ public class Resolver extends HttpServlet {
         }
 
         logger.info("Loglevel: " + logger.getEffectiveLevel().toString() + " using Log4J");
+        
+        logger.info("Setting up HTTPClient");
+        httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
 
     }
 }
