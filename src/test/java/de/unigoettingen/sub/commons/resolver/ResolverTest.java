@@ -9,6 +9,7 @@ import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
+import de.unigoettingen.sub.commons.resolver.util.OSLimits;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +36,14 @@ public class ResolverTest {
     public ResolverTest() {
     }
 
+    @BeforeClass
+    public static void getULimit() {
+        OSLimits lim = new OSLimits();        
+        logger.info("ULimit is set to " + lim.getSoftLimit(OSLimits.RLIMIT_ENUM.RLIMIT_NOFILE) + " / " + lim.getHardLimit(OSLimits.RLIMIT_ENUM.RLIMIT_NOFILE));
+        logger.info("Infinitive value is " + lim.getRLIM_INFINITY());
+        logger.info("To reduce the limits during the test use 'ulimit -Hn <num>' for hard limit and 'ulimit -Sn <num>' for the soft limit of open files");
+    }
+    
     @BeforeClass
     public static void initServlet() throws IOException, SAXException {
         File webXml = new File("./src/main/webapp/WEB-INF/web.xml");
@@ -181,4 +190,5 @@ public class ResolverTest {
             return "HTML Redirect";
         }
     }
+    
 }
