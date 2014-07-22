@@ -1,35 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- -configuration file for global SUB resolver -->
 <config>
-    <contact>kothe@sub.uni-goettingen.de</contact>
+    <contact>db-bis-gl@sub.uni-goettingen.de</contact>
     <maxThreadRuntime>5000</maxThreadRuntime> 
     <logoImage>./images/SUBLogo-new.png</logoImage>
     <css>./style.css</css>
     <localresolver>
         <!-- define a single resolver; -->
-        <!-- <resolver>
-		<name>Webdoc (Interims Reslolver)</name>
-		<url>http://webdoc.sub.gwdg.de/pi/index.php?lpi=</url>
-	</resolver> --> 
-        <!-- <resolver>
-            <name>Göttingen Digitalisierungszentrum</name>
-            <url>http://dz-srv1.sub.uni-goettingen.de/cgi-bin/digbib.cgi?xml&amp;</url>
-        </resolver> -->
         <resolver>
             <name>Hans-Werners Server</name>
             <!-- <url>http://arbeit.hilses.de/hw/pi?lpi= </url> -->
-<!--    	    <url>http://www.sub.uni-goettingen.de/scripts/persistent-identifier/?lpi=</url> -->
-    	    <url>http://w3a.sub.uni-goettingen.de/scripts/persistent-identifier/?lpi=</url>
-        </resolver>
-<!--
+            <!-- <url>http://www.sub.uni-goettingen.de/scripts/persistent-identifier/?lpi=</url> -->
+            <!-- <url>http://w3a.sub.uni-goettingen.de/scripts/persistent-identifier/?lpi=</url> -->
+            <url>http://lpir1.sub.uni-goettingen.de/?lpi=</url>
         <resolver>
             <name>DigiZeitschriften</name>
-            <url>http://www.digizeitschriften.de/resolvexml/</url>
-        </resolver>
-//-->
-        <resolver>
-            <name>DigiZeitschriften</name>
-            <url>http://www.digizeitschriften.de/index.php?id=resolvexml&amp;PPN=</url>
+            <!-- <url>http://www.digizeitschriften.de/index.php?id=resolvexml&amp;PPN=</url> -->
+            <url>http://www.digizeitschriften.de/dms/resolvexml?</url>
         </resolver>
        <resolver>
            <name>Uni-Verlag</name>
@@ -39,15 +26,19 @@
             <name>Göttingen Digitalisierungszentrum</name>
             <url>http://gdz.sub.uni-goettingen.de/dms/resolvexml/?</url>
         </resolver>
-<!--
-        <resolver>
-            <name>GoeScholar Publication Server</name>
-            <url>http://goedoc.uni-goettingen.de:8080/goescholar/resolvexml/</url>
-        </resolver>
-//-->
         <resolver>
             <name>Goescholar: Publication Server Uni Götttingen</name>
-            <url>http://134.76.163.170:8080/jspui/resolvexml/</url>           
+            <!-- <url>http://goedoc.uni-goettingen.de:8080/goescholar/resolvexml/</url> -->
+            <!-- <url>http://134.76.163.170:8080/jspui/resolvexml/</url> -->
+            <url>http://goedoc.uni-goettingen.de/jspui/resolvexml/</url>           
         </resolver> 
+        <resolver>
+            <name>eDISS: Dissertationen der Georg-August-Universität Göttingen</name>
+            <url>http://ediss.uni-goettingen.de/resolvexml?</url>           
+        </resolver> 
+	<resolver>
+            <name>Dspace Goedoc</name>
+            <url>http://goedoc.tc.sub.uni-goettingen.de/resolvexml/</url>
+	</resolver>
     </localresolver>
 </config>
