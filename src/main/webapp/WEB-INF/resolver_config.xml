@@ -13,6 +13,7 @@
             <!-- <url>http://www.sub.uni-goettingen.de/scripts/persistent-identifier/?lpi=</url> -->
             <!-- <url>http://w3a.sub.uni-goettingen.de/scripts/persistent-identifier/?lpi=</url> -->
             <url>http://lpir1.sub.uni-goettingen.de/?lpi=</url>
+        </resolver>
         <resolver>
             <name>DigiZeitschriften</name>
             <!-- <url>http://www.digizeitschriften.de/index.php?id=resolvexml&amp;PPN=</url> -->

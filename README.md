@@ -5,7 +5,7 @@ Running from Maven
 ------------------
 > mvn jetty:run-exploded
 
-Open (localhost:8080/resolver/purl?PPN726109029) in your browser.
+Open [http://localhost:8080/resolver/purl?PPN726109029](http://localhost:8080/resolver/purl?PPN726109029) in your browser.
 
 Generating the documentation
 ----------------------------
