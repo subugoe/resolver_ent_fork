@@ -19,12 +19,12 @@
             <!-- <url>http://www.digizeitschriften.de/index.php?id=resolvexml&amp;PPN=</url> -->
             <url>http://www.digizeitschriften.de/dms/resolvexml?</url>
         </resolver>
-	<!-- Konfiguration deaktiviert am 25.07.2014 von WM
+<!-- Konfiguration deaktiviert am 25.07.2014 von WM
        <resolver>
            <name>Uni-Verlag</name>
            <url>http://www.univerlag.uni-goettingen.de/content/purl/?lpi=</url>
         </resolver>
-	-->
+//-->
         <resolver>
             <name>Göttingen Digitalisierungszentrum</name>
             <url>http://gdz.sub.uni-goettingen.de/dms/resolvexml/?</url>
