@@ -43,5 +43,10 @@
             <name>Dspace Goedoc</name>
             <url>http://goedoc.tc.sub.uni-goettingen.de/resolvexml/</url>
 	</resolver>
+ 	<resolver>
+ 	    <!-- 2015-04-22 added by W.Muehl for new Univerlag Dspace Portal -->
+            <name>Univerlag Goettingen Dspace Portal</name>
+            <url>http://www.univerlag.uni-goettingen.de/resolvexml?</url>
+        </resolver>
     </localresolver>
 </config>
