@@ -69,6 +69,7 @@ public class LocalResolverConnectorThread extends Thread {
         HttpMethod method = new GetMethod(url);
 
         client.setTimeout(timeout); // sets timeout in milliseconds
+        client.setConnectionTimeout(timeout);
 
         try {
             int statusCode = client.executeMethod(method);
