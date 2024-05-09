@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -80,6 +81,10 @@ public class Resolver extends HttpServlet {
             return;
         }
         String parameter = params.get(0);
+        if (parameter.equals("PID")) {
+            parameter = request.getQueryString().replace("PID=", "");
+            logger.debug("parameter: " + parameter);
+        }
 
         // just ask all LocalResolver 
         // every connection in done in a seperate thread
